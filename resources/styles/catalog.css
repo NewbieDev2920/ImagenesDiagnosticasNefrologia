@@ -1,0 +1,110 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+#logo{
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 270px;
+    height: 180px;
+    width: 200px;
+    height: 90px;
+}
+
+.header-auth{
+    margin-right: 120px;
+    font-size:x-large;
+    margin-top: 30px;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:80vh;
+}
+
+.catalog-background{
+    background-color:#efeff5;
+    width: 75vw;
+    height:80vh;
+    border-radius: 2px;
+    border-color:#888888;
+    border-style:ridge;
+}
+
+.catalog-controls{
+    padding: 15px;
+    border-radius: 2px;
+    display: flex;
+    
+}
+
+#create{
+    margin-left: 20px;
+    margin-bottom: 2px;
+    padding: 10px;
+    background-color: #3333ff;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 1.4px;
+    border-radius: 1.5px;
+}
+
+#searchbar{
+    padding-top: 14px;
+    padding-bottom: 0px;
+    padding-left: 16px;
+    font-size: large;
+    width: 50vw;
+    resize: none;
+    border-radius: 2px;
+    margin-left: 30px;
+}
+
+ul{
+    height: 390px;
+    list-style: none;
+    padding: 10px 30px;
+    overflow-y: scroll;
+}
+
+li{
+    padding: 18px;
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+}
+
+li:nth-child(odd){
+    background-color: #e0e0eb;
+}
+
+.catalog-info{
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+.record-control{
+    background-color: #3333ff;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 1.2px;
+}
+
+#searchbar-button{
+    width: 60px;
+    margin-left: 15px;
+    background-color: #3333ff;
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 1.2px;
+}
