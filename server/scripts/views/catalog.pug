@@ -1,0 +1,46 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/catalog.css")
+    title Document
+  body
+    header
+      a(href="index.html")
+        img#logo(src="/images/logo.jpeg", alt="logo")
+      .header-auth Nombre Medico
+    .content
+      .catalog-background
+        .catalog-controls
+          a#create(href="/createrecord") Crear Registro
+          textarea#searchbar(name="searchbar")
+          a#searchbar-button(href="/search") Buscar
+        hr
+        .catalog-list
+          .catalog-info Formato: Paciente | Medico | Fecha
+          ul
+            li
+              .record-info 123
+              a.record-control Ver Registro
+            li
+              .record-info 456
+              a.record-control Ver Registro
+            li
+              .record-info 789
+              a.record-control Ver Registro
+            li
+              .record-info 789
+              a.record-control Ver Registro
+            li
+              .record-info 789
+              a.record-control Ver Registro
+            li
+              .record-info 789
+              a.record-control Ver Registro
+            li
+              .record-info 789
+              a.record-control Ver Registro
+            li
+              .record-info 789
+              a.record-control Ver Registro

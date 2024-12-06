@@ -1,0 +1,32 @@
+{
+  "name": "nefroimagenserver",
+  "version": "1.0.0",
+  "description": "server for nefroimagen webapp, its an app for sharing medical images and medical records.",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.21.1",
+    "pug": "^3.0.3",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewbieDev2920/ImagenesDiagnosticasNefrologia.git"
+  },
+  "keywords": [
+    "medic",
+    "images",
+    "health",
+    "record",
+    "webapp"
+  ],
+  "author": "Carlos De la Rosa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NewbieDev2920/ImagenesDiagnosticasNefrologia/issues"
+  },
+  "homepage": "https://github.com/NewbieDev2920/ImagenesDiagnosticasNefrologia#readme"
+}

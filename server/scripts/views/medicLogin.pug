@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/medicLogin.css")
+    title Document
+  body
+    .content-container
+      .logo-container
+        a(href="index.html")
+          img#logo(src="/images/logo.jpeg", alt="logo")
+      .input-container
+        input#user(name="user", placeholder="Usuario", type="text")
+        input#password(name="password", placeholder="Contraseña", type="password")
+      a.button(href="/catalog") Ingresar

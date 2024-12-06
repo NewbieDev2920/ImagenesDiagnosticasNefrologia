@@ -1,0 +1,67 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/createRecord.css")
+    title Document
+  body
+    header
+      a(href="index.html")
+        img#logo(src="/images/logo.jpeg", alt="logo")
+      .header-auth Nombre Medico
+    .content
+      .catalog-background
+        .column-left
+          form(action="/newrecord" method="post")
+            label(for="lastname") Apellidos Paciente
+            input#lastname(type="text", name="lastname")
+            br
+            br
+            label(for="firstname") Nombres Paciente
+            input#firstname(type="text", name="firstname")
+            br
+            br
+            label(for="clinichistory") Historia Clinica
+            input#clinichistory(type="text", name="clinichistory")
+            br
+            br
+            label(for="images") Anexo Imagenes
+            input#images(type="file", name="images")
+            br
+            br
+            label(for="observations") Observaciones
+            input#observations(type="text", name="observations" placeholder="Opcional")
+            br
+            br
+            input(type="submit", value="Submit")
+        .column-right
+          .container-image
+            | a
+          .button-create
+            a(id="submitrecord" onclick="submitData()") Guardar
+            a#cancelrecord(href="/cancelrecord") Cancelar
+script.
+    console.log("HOLAAAAAAAAAAAA");
+    
+    function submitData(){
+          console.log("Si se esta llamando");
+          document.getElementById("submitrecord").innerHTML = "HE CAMBIADOOOOOOOOOOO";
+          let formData = {
+          	lastname : document.getElementById("lastname").value,
+          	firstname : document.getElementById("firstname").value,
+          	clinichistory: document.getElementById("clinichistory").value,
+          	images : document.getElementById("images").value,
+          	observations : document.getElementById("observations").value
+          }
+          console.log(formData);
+          fetch('/newrecord',{
+          	method : 'POST',
+          	headers:{
+          		'Content-Type': 'application/json',
+          	},
+          	body : JSON.stringify(formData),
+          }).then((response) => response.json()).then((data) => console.log('Success:',data)).catch((error) => console.error('ERROR:', error));
+          
+    }
+	
