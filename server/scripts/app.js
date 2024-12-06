@@ -1,13 +1,13 @@
-//const sqlite = require('node:sqlite3');
-//const db = new sqlite.Database(':memory:');
 const OS  = require('os');
 const HOSTNAME = OS.hostname();
 let recordFile = require('./models/Record');
+let CRUDFile = require('./models/CRUD');
 const express = require('express');
 const path = require('path');
 const  app = express();
 const PORT = 3000;
 
+const crud = new CRUDFile.CRUD();
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json())
@@ -37,9 +37,30 @@ app.get('/createrecord', (req, res) => {
 	res.render('createRecord')
 })
 
+app.get('/createpatient', (req,res) =>{
+	console.log("GET | /createpatient | "+ req.ip + " | "+ Date());
+	res.render('createPatient');
+	
+})
+
 app.post('/newrecord', (req, res) => {
 	console.log('POST | /newrecord | '+ req.ip+' | '+ Date());
 	console.log(req.body);
+})
+
+app.post('/newpatient', (req, res) => {
+	console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
+	console.log(req.body);
+	crud.createPatient(req.body.id, req.body.lastname, req.body.firstname);
+	
+})
+
+app.get('/show',(req,res) =>{
+	crud.read();
+})
+
+app.get('/deletetable', (req, res) => {
+	crud.deleteAll();
 })
 
 app.listen(PORT);
