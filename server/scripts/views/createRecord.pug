@@ -14,12 +14,8 @@ html(lang="en")
       .catalog-background
         .column-left
           form(action="/newrecord" method="post")
-            label(for="lastname") Apellidos Paciente
-            input#lastname(type="text", name="lastname")
-            br
-            br
-            label(for="firstname") Nombres Paciente
-            input#firstname(type="text", name="firstname")
+            label(for="lastname") Buscar Paciente
+            input#lastname(type="text", name="lastname", onkeydown="refreshSearchBar()")
             br
             br
             label(for="clinichistory") Historia Clinica
@@ -42,11 +38,35 @@ html(lang="en")
             a(id="submitrecord" onclick="submitData()") Guardar
             a#cancelrecord(href="/cancelrecord") Cancelar
 script.
-    console.log("HOLAAAAAAAAAAAA");
+
+    let oldValue;
+	
+    function refreshSearchBar(){
+    	let newValue = document.getElementById('lastname').value;
+    	if(oldValue != newValue){
+    		oldValue = newValue;
+    		console.log(newValue);
+    		let firstChar = newValue.charAt(0);
+    		let searchPetition = {
+    			text: newValue,
+    			searchType: 0,
+    		}
+            if(parseInt(firstChar) === NaN){
+                //Si searchType es igual a 0 entonces se busca por ID, si searchType es igual a 1 entonces se busca por nombre.
+                searchPetition.searchType = 1;
+            }
+            fetch('/searchPatient',{
+            method : 'GET',
+            headers:{
+          		'Content-Type': 'application/json',
+          	},
+          	query : JSON.stringify(searchPetition);
+          }).then((response) => response.json()).then((data) => console.log('Success:',data)).catch((error) => console.error('ERROR:', error));
+    		
+    	}
+    }
     
     function submitData(){
-          console.log("Si se esta llamando");
-          document.getElementById("submitrecord").innerHTML = "HE CAMBIADOOOOOOOOOOO";
           let formData = {
           	lastname : document.getElementById("lastname").value,
           	firstname : document.getElementById("firstname").value,

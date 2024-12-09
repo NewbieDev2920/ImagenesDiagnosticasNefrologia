@@ -1,0 +1,36 @@
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/createRecord.css")
+    title Document
+  body(style="background-color:black;")
+    p(style="color: white;") TERMINAL
+    input#commandline(type=text, style="background-color:black; color:white;") 
+    br
+    p .
+    a(style="color:white;", onclick="executeCommand()") EXECUTE
+    p#result 
+script.
+   function executeCommand() {
+       let commandObject = {
+           command: document.getElementById("commandline").value
+       }; 
+       
+       fetch('/terminalExecute', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify(commandObject)
+       })
+       .then((response) => response.json())
+       .then((data) => {
+           console.log('Success:', data);
+           document.getElementById('result').textContent = data.result || 'Command executed';
+       })
+       .catch((error) => {
+           console.error('ERROR:', error);
+           document.getElementById('result').textContent = 'Error executing command';
+       });
+   }

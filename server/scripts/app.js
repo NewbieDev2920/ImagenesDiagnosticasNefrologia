@@ -55,12 +55,40 @@ app.post('/newpatient', (req, res) => {
 	
 })
 
-app.get('/show',(req,res) =>{
-	crud.read();
+app.get('/terminal', (req,res) =>{
+	res.render('terminal');
 })
 
-app.get('/deletetable', (req, res) => {
-	crud.deleteAll();
+app.get('/searchPatient', (req, res) =>{
+	console.log('GET | /searchPatient | '+ req.ip +' | '+ Date());
+	let queryResult;
+
+	if(req.headers.petition.searchType === 0){
+		queryResult = crud.readByPatientId(req.headers.petition.text);
+	}
+	else if(req.headers.petition.searchType === 1){
+		queryResult = crud.readByPatientName(req.headers.petition.text);
+	}
+
+	console.log(queryResult);
+	res.send(queryResult);
+})
+
+app.post('/terminalExecute', (req,res) =>{
+	let command = req.body.command.split(" ");
+	//command[0] command itself, command[1] parameter.
+	if(command[0] === "/erase"){
+		crud.erase(command[1]);
+	}else if(command[0] === "/show"){
+		crud.readAll();
+	}
+	else if(command[0] === "/deleteall"){
+		crud.deleteAll();
+	}
+	else{
+		console.log(command[0]+" Is not a valid command");
+	}
+	
 })
 
 app.listen(PORT);

@@ -14,11 +14,24 @@ class CRUD{
 		this.db.run('INSERT INTO patients (id, lastname, firstname) VALUES (?,?,?)', [id, lastname, firstname]);
 	}
 
-	read(){
+	readAll(){
 		this.db.all("SELECT * FROM patients", function(err, rows) {  
 		    rows.forEach(function (row) {  
-		        console.log(row.id, row.lastname, row.firstname);    // and other columns, if desired
+		        console.log(row.id, row.lastname, row.firstname);  
 		    })  
+		});
+	}
+
+	readByPatientId(id){
+		this.db.all("SELECT * FROM patients WHERE id LIKE '"+id+"%'", (err, rows) => {
+			console.log(typeof rows+ " typeof rows");
+			return rows;
+		});
+	}
+
+	readByPatientName(name){
+		this.db.all("SELECT * FROM patients WHERE lastname LIKE '"+name+"%'", (err, rows) => {
+			return rows;
 		});
 	}
 
@@ -26,9 +39,14 @@ class CRUD{
 		
 	}
 
-	//Delete
-	erase(){
-		
+	/*Delete
+	Condition must be a string
+	Current Columns: id(String), lastname, firstname 
+	condition example: id='id=123'
+	*/
+	erase(condition){
+		this.db.run("DELETE FROM patients WHERE "+condition+";");
+		console.log("Deleted elements with the folowing attributes: " + condition);
 	}
 
 	deleteAll(){
