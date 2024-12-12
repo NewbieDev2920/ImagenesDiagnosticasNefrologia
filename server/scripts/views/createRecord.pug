@@ -32,16 +32,41 @@ html(lang="en")
             br
             input(type="submit", value="Submit")
         .column-right
-          .container-image
-            | a
+          #container-data
           .button-create
             a(id="submitrecord" onclick="submitData()") Guardar
             a#cancelrecord(href="/cancelrecord") Cancelar
 script.
-
     let oldValue;
+    let dataContainer = document.getElementById('container-data');
+    let selectedPatient;
+
+    function selectPatient(id, name){
+    	console.log(name);
+    	selectedPatient = name;
+    	let patientBar = document.getElementById('lastname');
+    	patientBar.value = name;
+    }
+
+    function displayPatientList(currentPatientList){
+    	dataContainer.innerHTML = "";
+    	for(let i = 0; i < currentPatientList.length; i++){
+    		let patient = currentPatientList[i];
+    		dataContainer.innerHTML += `
+            <div class="container-patient">
+                <div class="patient-data">
+                    <div class="patient-name">${patient.firstName}</div>
+                    <div class = "patient-id">${patient.id}</div>
+                </div>
+                <div class="add-patient" onclick="selectPatient(${patient.id},'${patient.firstName}')">Seleccionar</div>
+            </div>
+    		`;
+    		
+    	}
+    }
 	
     function refreshSearchBar() {
+    	let currentPatientList;
         let newValue = document.getElementById('lastname').value;
         if (oldValue !== newValue) {
             oldValue = newValue;
@@ -64,9 +89,10 @@ script.
                 }
             })
             .then((response) => response.json())
-            .then((data) => console.log('Success:', data))
+            .then((data) => {console.log('Success:', data); currentPatientList = data; displayPatientList(currentPatientList);})
             .catch((error) => console.error('ERROR:', error));
         }
+        
     }
     
     function submitData(){

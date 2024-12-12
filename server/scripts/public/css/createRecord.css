@@ -147,8 +147,29 @@ li:nth-child(odd){
 	padding: 12px;
 }
 
-.container-image{
+#container-data{
 	margin-bottom: 30px;
-	background-color: black;
+	background-color: white;
 	height: 60vh;
+}
+
+.container-patient{
+	display:flex;
+	justify-content: space-between;
+}
+
+.patient-id{
+	color:gray;
+	font-size: 13px;
+}
+
+.add-patient{
+	background-color: #00994d;
+	color: white;
+	border-radius: 2px;
+}
+
+.add-patient:hover{
+	background-color:green;
+	cursor: pointer;
 }
