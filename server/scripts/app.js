@@ -2,6 +2,7 @@ const OS  = require('os');
 const HOSTNAME = OS.hostname();
 let recordFile = require('./models/Record');
 let CRUDFile = require('./models/CRUD');
+let patientFile = require('./models/Patient');
 const express = require('express');
 const path = require('path');
 const  app = express();
@@ -51,7 +52,8 @@ app.post('/newrecord', (req, res) => {
 app.post('/newpatient', (req, res) => {
 	console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
 	console.log(req.body);
-	crud.createPatient(req.body.id, req.body.lastname, req.body.firstname);
+	let patient = new patientFile.Patient(req.body.lastname, req.body.firstname, req.body.id);
+	crud.createPatient(patient);
 	
 })
 
@@ -60,18 +62,23 @@ app.get('/terminal', (req,res) =>{
 })
 
 app.get('/searchPatient', (req, res) =>{
-	console.log('GET | /searchPatient | '+ req.ip +' | '+ Date());
+	console.log('GET | /searchPatient | '+ req.socket.remoteAddress +' | '+ Date());
 	let queryResult;
-
-	if(req.headers.petition.searchType === 0){
-		queryResult = crud.readByPatientId(req.headers.petition.text);
+	if(req.query.searchType == 0){
+		crud.readByPatientId(req.query.text).then(q => {
+			queryResult = q;
+			res.json(queryResult);
+		});
 	}
-	else if(req.headers.petition.searchType === 1){
-		queryResult = crud.readByPatientName(req.headers.petition.text);
+	else if(req.query.searchType == 1){
+		 crud.readByPatientName(req.query.text).then(q => {
+			queryResult = q;
+			console.log(queryResult);
+			res.json(queryResult);
+		});
 	}
 
-	console.log(queryResult);
-	res.send(queryResult);
+
 })
 
 app.post('/terminalExecute', (req,res) =>{

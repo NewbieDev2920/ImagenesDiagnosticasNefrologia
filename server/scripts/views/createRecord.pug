@@ -41,29 +41,32 @@ script.
 
     let oldValue;
 	
-    function refreshSearchBar(){
-    	let newValue = document.getElementById('lastname').value;
-    	if(oldValue != newValue){
-    		oldValue = newValue;
-    		console.log(newValue);
-    		let firstChar = newValue.charAt(0);
-    		let searchPetition = {
-    			text: newValue,
-    			searchType: 0,
-    		}
-            if(parseInt(firstChar) === NaN){
-                //Si searchType es igual a 0 entonces se busca por ID, si searchType es igual a 1 entonces se busca por nombre.
-                searchPetition.searchType = 1;
-            }
-            fetch('/searchPatient',{
-            method : 'GET',
-            headers:{
-          		'Content-Type': 'application/json',
-          	},
-          	query : JSON.stringify(searchPetition);
-          }).then((response) => response.json()).then((data) => console.log('Success:',data)).catch((error) => console.error('ERROR:', error));
-    		
-    	}
+    function refreshSearchBar() {
+        let newValue = document.getElementById('lastname').value;
+        if (oldValue !== newValue) {
+            oldValue = newValue;
+            console.log(newValue);
+            let firstChar = newValue.charAt(0);
+            
+            // Determine search type
+            let searchType = isNaN(parseInt(firstChar)) ? 1 : 0;
+            
+            // Construct query parameters
+            const params = new URLSearchParams({
+                text: newValue,
+                searchType: searchType
+            });
+    
+            fetch(`/searchPatient?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then((response) => response.json())
+            .then((data) => console.log('Success:', data))
+            .catch((error) => console.error('ERROR:', error));
+        }
     }
     
     function submitData(){

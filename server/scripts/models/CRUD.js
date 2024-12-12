@@ -1,4 +1,5 @@
 const sqlite = require('sqlite3');
+const patientFile = require('./Patient');
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
@@ -10,31 +11,52 @@ class CRUD{
 		this.db.run('CREATE TABLE IF NOT EXISTS patients (id VARCHAR(15) PRIMARY KEY, lastname VARCHAR(50), firstname VARCHAR(50))');
 	}
 
-    createPatient(id, lastname, firstname){
-		this.db.run('INSERT INTO patients (id, lastname, firstname) VALUES (?,?,?)', [id, lastname, firstname]);
+    createPatient(patient){
+		this.db.run('INSERT INTO patients (id, lastname, firstname) VALUES (?,?,?)', [patient.getId(), patient.getLastname(), patient.getFirstname()]);
 	}
 
 	readAll(){
 		this.db.all("SELECT * FROM patients", function(err, rows) {  
-		    rows.forEach(function (row) {  
-		        console.log(row.id, row.lastname, row.firstname);  
+		    rows.forEach(function (row) { 
+		    	let patient = new patientFile.Patient(row.lastname,row.firstname, row.id); 
+		        console.log(patient.getId(), patient.getLastName(), patient.getFirstName());  
 		    })  
 		});
 	}
 
-	readByPatientId(id){
-		this.db.all("SELECT * FROM patients WHERE id LIKE '"+id+"%'", (err, rows) => {
-			console.log(typeof rows+ " typeof rows");
-			return rows;
-		});
+	readByPatientId(id) {
+	    return new Promise((resolve, reject) => {
+	        this.db.all("SELECT * FROM patients WHERE id LIKE ?", [`${id}%`], (err, rows) => {
+	            if (err) {
+	                reject(err);
+	                return;
+	            }
+	            
+	            const queryResult = rows.map(row => 
+	                new patientFile.Patient(row.lastname, row.firstname, row.id)
+	            );
+	            
+	            resolve(queryResult);
+	        });
+	    });
 	}
 
-	readByPatientName(name){
-		this.db.all("SELECT * FROM patients WHERE lastname LIKE '"+name+"%'", (err, rows) => {
-			return rows;
-		});
+	readByPatientName(name) {
+	    return new Promise((resolve, reject) => {
+	        this.db.all("SELECT * FROM patients WHERE lastname LIKE ?", [`${name}%`], (err, rows) => {
+	            if (err) {
+	                reject(err);
+	                return;
+	            }
+	            
+	            const queryResult = rows.map(row => 
+	                new patientFile.Patient(row.lastname, row.firstname, row.id)
+	            );
+	            
+	            resolve(queryResult);
+	        });
+	    });
 	}
-
 	update(){
 		
 	}
