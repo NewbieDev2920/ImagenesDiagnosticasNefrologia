@@ -9,10 +9,46 @@ class CRUD{
 	constructor(){
 		this.db = new sqlite.Database('models/storage/patient.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
 		this.db.run('CREATE TABLE IF NOT EXISTS patients (id VARCHAR(15) PRIMARY KEY, lastname VARCHAR(50), firstname VARCHAR(50))');
+		this.db.run('CREATE TABLE IF NOT EXISTS records (id VARCHAR(36) PRIMARY KEY, patientname VARCHAR(50), patientId VARCHAR(15), date VARCHAR(30), imagespath VARCHAR(400))');
+	    this.db.run('CREATE TABLE IF NOT EXISTS medics (id VARCHAR (15) PRIMARY KEY, lastname VARCHAR(50), firstname VARCHAR(50), password VARCHAR(50))')
 	}
 
     createPatient(patient){
 		this.db.run('INSERT INTO patients (id, lastname, firstname) VALUES (?,?,?)', [patient.getId(), patient.getLastname(), patient.getFirstname()]);
+	}
+
+	createRecord(record){
+		this.db.run('INSERT INTO records (id, patientname, patientId, date, imagespath) VALUES (?,?,?,?,?)', [record.getId(), record.getPatientName(), record.getPatientId(), record.getDate(), JSON.stringify(record.getImagesPath())]);
+	}
+
+	createMedic(medic){
+		this.db.run('INSERT INTO medics (id, lastname, firstname, password) VALUES (?,?,?,?)', [medic.getId(), medic.getLastName(), medic.getFirstName(), medic.getPassword()]);
+	}
+
+
+
+	readRecordByID(){
+		
+	}
+
+	readRecordsByPatientId(){
+		
+	}
+
+	readAllRecords(){
+		this.db.all('SELECT * FROM records', (err, rows) =>{
+			rows.forEach((row)=> {
+				console.log(row);
+			})
+		})
+	}
+
+	readAllMedics(){
+		this.db.all('SELECT * FROM medics', (err, rows) =>{
+					rows.forEach((row)=> {
+						console.log(row);
+					})
+				})
 	}
 
 	readAll(){
@@ -84,6 +120,10 @@ class CRUD{
 		  readline.close();
 		});
 		
+	}
+
+	deleteTable(tablename){
+		this.db.run("DROP TABLE "+tablename);
 	}
 }
 module.exports.CRUD = CRUD;

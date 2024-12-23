@@ -1,16 +1,45 @@
-doctype html
-html(lang="en")
-  head
+head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/css/medicLogin.css")
     title Document
-  body
+body
     .content-container
-      .logo-container
-        a(href="index.html")
-          img#logo(src="/images/logo.jpeg", alt="logo")
-      .input-container
-        input#user(name="user", placeholder="Usuario", type="text")
-        input#password(name="password", placeholder="Contraseña", type="password")
-      a.button(href="/catalog") Ingresar
+        .logo-container
+            a(href="index.html")
+                img#logo(src="/images/logo.jpeg", alt="logo")
+        .input-container
+            input#user(name="user", placeholder="Usuario", type="text")
+            input#password(name="password", placeholder="Contraseña", type="password")
+        a.button Ingresar
+script.
+    // Wait for the DOM to load
+    document.addEventListener('DOMContentLoaded', () => {
+        // Select the button
+        const button = document.getElementsByClassName('button')[0];
+
+        // Add an onclick event listener
+        button.addEventListener('click', () => {
+            alert('Button clicked!');
+            submitData();
+        });
+    });
+
+    // Submit data function
+    function submitData() {
+        let data = {
+            user: document.getElementById('user').value,
+            password: document.getElementById('password').value
+        };
+
+        fetch('/medicauth', {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+        .catch(err => console.error('Error:', err));
+    }

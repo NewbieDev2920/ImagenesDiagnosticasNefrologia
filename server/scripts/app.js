@@ -1,17 +1,30 @@
+const multer = require('multer')
 const OS  = require('os');
 const HOSTNAME = OS.hostname();
 let recordFile = require('./models/Record');
 let CRUDFile = require('./models/CRUD');
+let authFile = require('./models/Authentication');
 let patientFile = require('./models/Patient');
+let medicFile = require('./models/Medic');
 const express = require('express');
 const path = require('path');
 const  app = express();
 const PORT = 3000;
+const upload = multer({dest:"uploads/"});
+const session = require('express-session')
+
+app.use(session({
+	secret: "clave super secreta",
+	resave: false,
+	saveUninitialized: false,
+}))
 
 const crud = new CRUDFile.CRUD();
+const auth = new authFile.Authentication();
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname,'public')));
-app.use(express.json())
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 console.log('HOSTNAME : '+ HOSTNAME);
 console.log('Listening on port : '+ PORT);
 console.log("\n### Request Info ###");
@@ -44,9 +57,17 @@ app.get('/createpatient', (req,res) =>{
 	
 })
 
-app.post('/newrecord', (req, res) => {
+app.post('/newrecord', upload.array("files"),(req, res) => {
 	console.log('POST | /newrecord | '+ req.ip+' | '+ Date());
 	console.log(req.body);
+	console.log(req.files);
+	let imagesPaths = [];
+	for(let i = 0; i < req.files.length; i++){
+		imagesPaths.push(req.files[i].path);
+	}
+	let record = new recordFile.Record(req.body.id, req.body.name, req.body.date, imagesPaths);
+	crud.createRecord(record);
+	res.json({status : "OK"});
 })
 
 app.post('/newpatient', (req, res) => {
@@ -57,9 +78,48 @@ app.post('/newpatient', (req, res) => {
 	
 })
 
+app.post('/newmedic', (req, res) =>{
+	console.log(req.body);
+	let medic = new medicFile.Medic(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
+	crud.createMedic(medic);
+	
+})
+
 app.get('/terminal', (req,res) =>{
 	res.render('terminal');
 })
+
+app.get('/admin', (req, res) =>{
+	res.render('admin');
+})
+
+app.post('/medicauth', (req,res)=>{
+	console.log(req.body.user);
+	console.log(req.body.password);
+	auth.medicCredentials(req.body.user, req.body.password).then(q => {
+		if(q.length === 0){
+			console.log('USERNAME OR PASSWORD IS INCORRECT');
+		}
+		else if(q.length === 1){
+			console.log('AUTHENTICATED CORRECTLY!');
+			req.session.firstname = q[0].firstName;
+			res.redirect('/sess'); 
+		}else{
+			console.log('INTERNAL ERROR');
+		}
+	})
+	
+	
+})
+
+app.get('/sess', (req, res) => {
+    if (req.session.firstname) {
+        res.send('Hello ' + req.session.firstname);  // Session data is available
+    } else {
+        res.send('Session not set or expired');
+    }
+});
+
 
 app.get('/searchPatient', (req, res) =>{
 	console.log('GET | /searchPatient | '+ req.socket.remoteAddress +' | '+ Date());
@@ -87,10 +147,24 @@ app.post('/terminalExecute', (req,res) =>{
 	if(command[0] === "/erase"){
 		crud.erase(command[1]);
 	}else if(command[0] === "/show"){
-		crud.readAll();
+		if(command[1]=="patients"){
+			crud.readAll();	
+		}
+		else if(command[1]=="records"){
+			crud.readAllRecords();
+		}
+		else if(command[1] == "medics"){
+			crud.readAllMedics();
+		}
+		else{
+			console.log('TABLE DOESNT EXISTS');
+		}
 	}
 	else if(command[0] === "/deleteall"){
 		crud.deleteAll();
+	}
+	else if(command[0] === "/deletetable"){
+		crud.deleteTable(command[1]);
 	}
 	else{
 		console.log(command[0]+" Is not a valid command");

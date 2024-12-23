@@ -173,3 +173,15 @@ li:nth-child(odd){
 	background-color:green;
 	cursor: pointer;
 }
+
+#insertarImagen{
+	background-color:#00994d;
+	color: white;
+	border-radius: 2px;
+	padding: 5px; 
+	margin: 7px;
+}
+
+#insertarImagen:hover{
+	cursor:pointer;
+}

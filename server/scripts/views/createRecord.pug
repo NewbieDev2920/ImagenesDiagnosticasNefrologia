@@ -13,7 +13,7 @@ html(lang="en")
     .content
       .catalog-background
         .column-left
-          form(action="/newrecord" method="post")
+          form(action="/newrecord" method="post" id="form")
             label(for="lastname") Buscar Paciente
             input#lastname(type="text", name="lastname", onkeydown="refreshSearchBar()")
             br
@@ -22,8 +22,8 @@ html(lang="en")
             input#clinichistory(type="text", name="clinichistory")
             br
             br
-            label(for="images") Anexo Imagenes
-            input#images(type="file", name="images")
+            div#patient-images-container Lista de imagenes
+               input#images(type="file" multiple)
             br
             br
             label(for="observations") Observaciones
@@ -31,6 +31,7 @@ html(lang="en")
             br
             br
             input(type="submit", value="Submit")
+            p#responseMsg(style="color:green;")
         .column-right
           #container-data
           .button-create
@@ -39,11 +40,13 @@ html(lang="en")
 script.
     let oldValue;
     let dataContainer = document.getElementById('container-data');
-    let selectedPatient;
+    let selectedPatientName;
+    let selectedPatientId;
 
     function selectPatient(id, name){
     	console.log(name);
-    	selectedPatient = name;
+    	selectedPatientName = name;
+    	selectedPatientId = id;
     	let patientBar = document.getElementById('lastname');
     	patientBar.value = name;
     }
@@ -94,23 +97,37 @@ script.
         }
         
     }
+
+    function insertImage(){
+        console.log('I was clicked!');
+    	let imagesContainer = document.getElementById("patient-images-container");
+        let newInput = document.createElement('input');    	
+        imagesContainer.appendChild(newInput);
+        //input.images(type="file")
+        newInput.setAttribute('class','images');
+        newInput.setAttribute('type','file');
+        
+    }
+
+    document.getElementById('form').addEventListener("submit",submitData);
     
-    function submitData(){
-          let formData = {
-          	lastname : document.getElementById("lastname").value,
-          	firstname : document.getElementById("firstname").value,
-          	clinichistory: document.getElementById("clinichistory").value,
-          	images : document.getElementById("images").value,
-          	observations : document.getElementById("observations").value
+    function submitData(e){
+          e.preventDefault();
+          let htmlImages = document.getElementById("images");
+          const formData = new FormData();
+          for(let i=0; i < htmlImages.files.length; i++ ){
+          	let imageFile = htmlImages.files[i];
+          	formData.append('files', imageFile);
           }
-          console.log(formData);
+          formData.append('date', ''+ Date());
+          formData.append('name', selectedPatientName);
+          formData.append('id', selectedPatientId);
+          formData.append('observations', document.getElementById('observations').value);
           fetch('/newrecord',{
           	method : 'POST',
-          	headers:{
-          		'Content-Type': 'application/json',
-          	},
-          	body : JSON.stringify(formData),
-          }).then((response) => response.json()).then((data) => console.log('Success:',data)).catch((error) => console.error('ERROR:', error));
+          	body : formData
+          }).then((response) => response.json()).then((data) => {console.log('Success:',data.status); document.getElementById('responseMsg').value = "REGISTRO CREADO."}).catch((error) => console.error('ERROR:', error));
+          
           
     }
 	

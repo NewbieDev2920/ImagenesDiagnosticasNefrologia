@@ -1,0 +1,56 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title My Website
+    link(rel="stylesheet", href="./style.css")
+    link(rel="icon", href="./favicon.ico", type="image/x-icon")
+  body
+    main
+      h1 ADMIN PANEL
+      h1 CREAR MEDICO
+      form#newMedicForm(action="javascript:void(0)")  // Prevent traditional form submission
+        div
+          label(for='lastname') Apellido:
+          input#lastname(type='text', name='lastname', required)
+        div
+          label(for='firstname') Nombre:
+          input#firstname(type='text', name='firstname', required)
+        div
+          label(for='id') Cedula:
+          input#id(type='text', name='id', required)
+        div
+          label(for='password') Contraseña:
+          input#password(type='password', name='password', required)
+        button(type='submit') Enviar
+
+    script.
+      // JavaScript to handle form submission with fetch
+      document.getElementById('newMedicForm').addEventListener('submit', function(event) {
+          event.preventDefault();  // Prevent default form submission
+
+          // Gather the form data
+          const data = {
+              lastname: document.getElementById('lastname').value,
+              firstname: document.getElementById('firstname').value,
+              id: document.getElementById('id').value,
+              password: document.getElementById('password').value
+          };
+
+          // Send data as JSON via fetch
+          fetch('/newmedic', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'  // Important to tell the server we are sending JSON
+              },
+              body: JSON.stringify(data)  // Convert the data object to a JSON string
+          })
+          .then(response => response.json())
+          .then(responseData => {
+              console.log('Response from server:', responseData);
+              // You can add logic here to handle the response, like showing a success message
+          })
+          .catch(error => console.error('Error:', error));
+      });
