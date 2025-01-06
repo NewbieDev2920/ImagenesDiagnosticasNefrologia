@@ -41,6 +41,16 @@ app.get('/mediclogin', (req,res) => {
 	res.render('medicLogin');
 })
 
+app.get('/patientlogin', (req, res) => {
+	console.log("GET | /patientlogin | "+ req.ip+ " | "+ Date());
+	res.render('patientLogin');
+})
+
+app.get('/patientrecordcatalog', (req, res) =>{
+	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
+	res.render('patientRecordCatalog');
+})
+
 app.get('/catalog', (req, res) =>{
 	console.log("GET | /catalog | "+ req.ip+ " | "+ Date());
 	res.render('catalog')
