@@ -28,21 +28,27 @@ head
               input#your_pass(type='password' name='your_pass' placeholder='Password')
             .form-group
             .form-group.form-button
-              a#signin.form-submit(href='/patientrecordcatalog') Log in
+              a#signin.form-submit(onclick="submitData()") Log in
 // JS
 script.
    function submitData(){
      let data = {
-     	user: document.getElementById('your_name').value;
-     	password: document.getElementById('your_pass').value;
+     	user: document.getElementById('your_name').value,
+     	password: document.getElementById('your_pass').value,
      }
+
+     let status = "";
 
      fetch('/patientauth', {
      	headers: {
-     		'Content-Type' : 'application/json'
+     		'Content-Type' : 'application/json',
+     	},
+     	method: 'POST',
+     	body: JSON.stringify(data),
+     }).then(res => res.json()).then(res => {
+     	if(res.status === "OK"){
+           window.location.href = res.redirect;	
      	}
-     	method: 'POST'
-     	body: JSON.stringify(data);
-     }).then(res => res.json()).then(res => console.log(res)).catch(err => console.error('Error: ',err))
+     }).catch(err => console.error('Error: ',err))
    }
 // This templates was made by Colorlib (https://colorlib.com)

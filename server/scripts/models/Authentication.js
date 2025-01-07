@@ -23,8 +23,21 @@ class Authentication{
 			    });
 	}
 
-	patientCredentials(){
-		
+	patientCredentials(id, pass){
+		return new Promise((resolve, reject) => {
+					        this.db.all("SELECT * FROM patients WHERE id='"+id+"' AND password='"+pass+"'", (err, rows) => {
+					            if (err) {
+					                reject(err);
+					                return 0;
+					            }
+					            
+					            const queryResult = rows.map(row => 
+					                new patientFile.Patient(row.lastname, row.firstname, row.id, row.password)
+					            );
+					            
+					            resolve(queryResult);
+					        });
+					    });
 	}
 }
 module.exports.Authentication = Authentication;

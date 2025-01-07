@@ -33,15 +33,19 @@ html(lang="en")
           .container-image
             | a
           .button-create
-            a(id="submitrecord" onclick="submitData()") Guardar
+            a(id="submitrecord", onclick="submitData()") Guardar
             a#cancelrecord(href="/catalog") Volver
 script.
+
+    let submitButton = document.getElementById('submitRecord');
+    submitButton.addEventListener("onclick", submitData);
     
     function submitData(){
           let formData = {
           	lastname : document.getElementById("lastname").value,
           	firstname : document.getElementById("firstname").value,
           	id: document.getElementById("id").value,
+          	password: document.getElementById('password').value,
           }
           console.log(formData);
           fetch('/newpatient',{
@@ -56,4 +60,6 @@ script.
           userMessage.style.color = "green";
                
     }
+
+
 	

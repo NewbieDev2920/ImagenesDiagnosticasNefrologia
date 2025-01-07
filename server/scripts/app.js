@@ -1,3 +1,24 @@
+// IMAGENESDIAGNOSTICASNEFROLOGIA BY CARLOS DE LA ROSA
+//-----------------------------
+//BETA
+//-----------------------------
+//LOGIN PACIENTE ()
+//DISPLAY RECORDS PACIENTE ()
+//ENFOQUE DE RECORDS PACIENTE ()
+//PAGINA STATUS 404 ()
+//PAGINA STATUS 401 ()
+//PAGINA STATUS 403? ()
+//-----------------------------
+// v1.0
+//-----------------------------
+//LANDING PAGE ()
+//VALIDACIONES ()
+//-----------------------------
+// v1.1
+//-----------------------------
+//COMPLETAR CRUD ()
+//PROTECCION ATAQUE SQLINJECTION ()
+//PROTECCION ATAQUE FUERZA BRUTA ()
 const multer = require('multer')
 const OS  = require('os');
 const HOSTNAME = OS.hostname();
@@ -83,12 +104,13 @@ app.post('/newrecord', upload.array("files"),(req, res) => {
 app.post('/newpatient', (req, res) => {
 	console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
 	console.log(req.body);
-	let patient = new patientFile.Patient(req.body.lastname, req.body.firstname, req.body.id);
+	let patient = new patientFile.Patient(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
 	crud.createPatient(patient);
 	
 })
 
 app.post('/newmedic', (req, res) =>{
+    console.log('POST | /newmedic | '+ req.ip +' | '+ Date());
 	console.log(req.body);
 	let medic = new medicFile.Medic(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
 	crud.createMedic(medic);
@@ -122,7 +144,28 @@ app.post('/medicauth', (req,res)=>{
 	
 })
 
+app.post('/patientauth', (req, res) => {
+	console.log(req.body.user);
+	console.log(req.body.password);
+	auth.patientCredentials(req.body.user, req.body.password).then(q => {
+		if(q.length === 0){
+			console.log('USERNAME OR PASSWORD IS INCORRECT');
+		}
+		else if(q.length === 1){
+			console.log('AUTHENTICATED CORRECTLY!');
+			req.session.firstname = q[0].firstName;
+			res.json({status : 'OK', redirect : '/patientrecordcatalog'});
+			
+		}
+	})	
+})
+
+app.post('/medicauth', (req, res) =>{
+	console.log(req.body.user);
+})
+
 app.get('/sess', (req, res) => {
+	console.log('we on sess boyz')
     if (req.session.firstname) {
         res.send('Hello ' + req.session.firstname);  // Session data is available
     } else {
@@ -180,6 +223,10 @@ app.post('/terminalExecute', (req,res) =>{
 		console.log(command[0]+" Is not a valid command");
 	}
 	
+})
+
+app.get('*', (req, res) =>{
+	res.render('404');
 })
 
 app.listen(PORT);
