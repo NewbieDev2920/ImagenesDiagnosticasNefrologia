@@ -1,7 +1,12 @@
 const {randomUUID} = require('crypto');
 class Record{	
-	constructor(patientId,patientName,date, imagesPath){
-		this.id  = randomUUID();
+	constructor(id,patientId,patientName,date, imagesPath){
+		if(id === null){
+			this.id  = randomUUID();	
+		}
+		else{
+			this.id = id;	
+		}
 		this.patientName = patientName;
 		this.patientId = patientId;
 		this.date = date;

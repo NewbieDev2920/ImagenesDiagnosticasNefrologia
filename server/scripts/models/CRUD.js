@@ -1,5 +1,6 @@
 const sqlite = require('sqlite3');
 const patientFile = require('./Patient');
+const recordFile = require('./Record');
 const readline = require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
@@ -28,7 +29,7 @@ class CRUD{
 
 
 	readRecordByID(){
-		
+				
 	}
 
 	readRecordsByPatientId(){
@@ -41,6 +42,10 @@ class CRUD{
 				console.log(row);
 			})
 		})
+	}
+
+	readRecordsByPatientId(id){
+		
 	}
 
 	readAllMedics(){
@@ -75,6 +80,26 @@ class CRUD{
 	            resolve(queryResult);
 	        });
 	    });
+	}
+
+	readRecordsByPatientId(id){
+		return new Promise((resolve, reject) =>{
+			this.db.all("SELECT * FROM records WHERE patientId = ?",[id] ,(err, rows) => {
+				if(err){
+					reject(err);
+					return;
+				}
+
+				const queryResult = rows.map(row =>{
+					console.log(row);
+					return new recordFile.Record(row.id, row.patientname, row.patientId, row.date, row.imagespath );
+				}		
+				);
+
+				resolve(queryResult);
+			});
+			
+		})
 	}
 
 	readByPatientName(name) {

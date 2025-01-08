@@ -1,23 +1,24 @@
 head
   link(rel='stylesheet' href='css/catalogstyles.css')
-ol(style='--length: 5' role='list')
-  li(style='--i: 1')
-    h3 Discovery and assessment
-    p
-      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing diam donec adipiscing tristique risus.
-  li(style='--i: 2')
-    h3 Information gathering and analysis
-    p
-      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing diam donec adipiscing tristique risus.
-  li(style='--i: 3')
-    h3 Creating your claim
-    p
-      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing diam donec adipiscing tristique risus.
-  li(style='--i: 4')
-    h3 Approvals and submission
-    p
-      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing diam donec adipiscing tristique risus.
-  li(style='--i: 5')
-    h3 Receiving your benefit
-    p
-      | Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing diam donec adipiscing tristique risus.
+body(onload="getRecords()")
+   .profileinfocontainer
+      h1=welcome
+   ol#recordlist(style='--length: 5' role='list')
+script.
+
+   function getRecords(){
+      fetch('/getrecords').then(res => res.json()).then(res => {
+        let recordList = document.getElementById('recordlist');
+      	let displayList = JSON.parse(res.recordList);
+      	for(let i = 0; i < displayList.length; i++){
+      		console.log(i+1, displayList[i]);
+      		recordList.innerHTML += `<li style="--i: 5">
+      		      	      <h3>Examen de ${displayList[i].patientName}</h3>
+      		      	      <p>${displayList[i].date}</p>
+      		      	      <div class="focusbutton" recordid="${displayList[i].id}">Ver</div>
+      		      	    </li>`;
+      	}
+      	
+      	
+      }).catch(err => console.error(':( ', err))
+   }

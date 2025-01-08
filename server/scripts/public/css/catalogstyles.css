@@ -76,6 +76,25 @@ h3::before {
 	color: white;
 }
 
+
+h1{
+	text-align:center;
+	padding: 3rem;
+}
+
+.focusbutton{
+	color: #ffffff;
+	font-weight: bold;
+	background-color: #59e390;
+	margin-top: 2rem;
+	padding: 1rem;
+	border-radius: 0.2rem;
+}
+
+.focusbutton:hover{
+	cursor:pointer;
+}
+
 @media (min-width: 40em) {
 	li {
 		margin: 3rem auto;

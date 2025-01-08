@@ -1,13 +1,14 @@
-// IMAGENESDIAGNOSTICASNEFROLOGIA BY CARLOS DE LA ROSA
+// ### IMAGENESDIAGNOSTICASNEFROLOGIA BY CARLOS DE LA ROSA ###
 //-----------------------------
 //BETA
 //-----------------------------
-//LOGIN PACIENTE ()
+//LOGIN PACIENTE (x)
 //DISPLAY RECORDS PACIENTE ()
 //ENFOQUE DE RECORDS PACIENTE ()
-//PAGINA STATUS 404 ()
+//PAGINA STATUS 404 (x)
 //PAGINA STATUS 401 ()
 //PAGINA STATUS 403? ()
+//ARREGLAR COSITAS ()
 //-----------------------------
 // v1.0
 //-----------------------------
@@ -51,7 +52,6 @@ console.log('Listening on port : '+ PORT);
 console.log("\n### Request Info ###");
 console.log('HTTP METHOD | URL  ROUTE | IP | TIME');
 
-
 app.get('/', (req,res) => {
 	console.log("GET | / | "+ req.ip+ " | "+ Date())
 	res.render('index');
@@ -69,7 +69,17 @@ app.get('/patientlogin', (req, res) => {
 
 app.get('/patientrecordcatalog', (req, res) =>{
 	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
-	res.render('patientRecordCatalog');
+	res.render('patientRecordCatalog', {welcome : 'Bienvenido '+ req.session.profile.firstName+'.'});
+})
+
+app.get('/getrecords', (req, res) =>{
+	console.log("GET | /getrecords | "+ req.ip+ " | "+ Date());
+	console.log(req.session.profile.id);
+	crud.readRecordsByPatientId(req.session.profile.id).then(q => {
+		console.log('mostrar q : ',q);
+		res.json({recordList: JSON.stringify(q)});
+	});
+	
 })
 
 app.get('/catalog', (req, res) =>{
@@ -96,7 +106,7 @@ app.post('/newrecord', upload.array("files"),(req, res) => {
 	for(let i = 0; i < req.files.length; i++){
 		imagesPaths.push(req.files[i].path);
 	}
-	let record = new recordFile.Record(req.body.id, req.body.name, req.body.date, imagesPaths);
+	let record = new recordFile.Record(null,req.body.id, req.body.name, req.body.date, imagesPaths);
 	crud.createRecord(record);
 	res.json({status : "OK"});
 })
@@ -134,7 +144,7 @@ app.post('/medicauth', (req,res)=>{
 		}
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
-			req.session.firstname = q[0].firstName;
+			req.session.profile = new medicFile.Medic(q[0].lastName, q[0].firstName, q[0].id, null);
 			res.redirect('/sess'); 
 		}else{
 			console.log('INTERNAL ERROR');
@@ -153,7 +163,7 @@ app.post('/patientauth', (req, res) => {
 		}
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
-			req.session.firstname = q[0].firstName;
+			req.session.profile = new patientFile.Patient(q[0].lastName, q[0].firstName, q[0].id, null);
 			res.json({status : 'OK', redirect : '/patientrecordcatalog'});
 			
 		}
@@ -165,9 +175,9 @@ app.post('/medicauth', (req, res) =>{
 })
 
 app.get('/sess', (req, res) => {
-	console.log('we on sess boyz')
-    if (req.session.firstname) {
-        res.send('Hello ' + req.session.firstname);  // Session data is available
+	console.log(req.session.profile);
+    if (req.session.profile) {
+        res.send('Hello ' + req.session.profile.id);  // Session data is available
     } else {
         res.send('Session not set or expired');
     }
