@@ -15,10 +15,14 @@ script.
       		recordList.innerHTML += `<li style="--i: 5">
       		      	      <h3>Examen de ${displayList[i].patientName}</h3>
       		      	      <p>${displayList[i].date}</p>
-      		      	      <div class="focusbutton" recordid="${displayList[i].id}">Ver</div>
+      		      	      <div class="focusbutton" onclick="focusRecord('${displayList[i].id}')">Ver</div>
       		      	    </li>`;
       	}
       	
       	
       }).catch(err => console.error(':( ', err))
+   }
+
+   function focusRecord(recordId){
+      fetch(`/focusrecord?id=${recordId}`);
    }

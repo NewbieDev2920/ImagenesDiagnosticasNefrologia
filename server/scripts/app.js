@@ -3,7 +3,7 @@
 //BETA
 //-----------------------------
 //LOGIN PACIENTE (x)
-//DISPLAY RECORDS PACIENTE ()
+//DISPLAY RECORDS PACIENTE (x)
 //ENFOQUE DE RECORDS PACIENTE ()
 //PAGINA STATUS 404 (x)
 //PAGINA STATUS 401 ()
@@ -71,6 +71,22 @@ app.get('/patientrecordcatalog', (req, res) =>{
 	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
 	res.render('patientRecordCatalog', {welcome : 'Bienvenido '+ req.session.profile.firstName+'.'});
 })
+
+app.get('/focusrecord', (req, res) => {
+	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
+	const id = req.query.id;
+	console.log(id);
+	/*crud.readRecordById(id).then(q => {
+		res.render('focusrecord', q);	
+	})*/
+	res.render('focusrecord', {identifier : id});
+	
+})
+
+app.get('/css2/:filename', (req, res) => {
+    res.sendFile(__dirname + '/public/css2/' + req.params.filename);
+});
+
 
 app.get('/getrecords', (req, res) =>{
 	console.log("GET | /getrecords | "+ req.ip+ " | "+ Date());

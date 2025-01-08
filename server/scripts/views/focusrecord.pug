@@ -1,0 +1,54 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  meta(http-equiv='X-UA-Compatible' content='ie=edge')
+  title Sign Up Form by Colorlib
+  // Font Icon
+  link(rel='stylesheet' href='fonts/material-icon/css/material-design-iconic-font.min.css')
+  // Main css
+  link(rel='stylesheet' href='css2/style.css')
+.main
+  section.sign-in
+    .container
+      .signin-content
+        .signin-image
+          figure
+            img(src='images/logo.jpeg' alt='sing up image')
+        .signin-form
+          h2.form-title=identifier+"Holaaa"
+          form#login-form.register-form(method='POST')
+            .form-group
+              label(for='your_name')
+                i.zmdi.zmdi-account.material-icons-name
+              input#your_name(type='text' name='your_name' placeholder='Your Name')
+            .form-group
+              label(for='your_pass')
+                i.zmdi.zmdi-lock
+              input#your_pass(type='password' name='your_pass' placeholder='Password')
+            .form-group
+            .form-group.form-button
+              a#signin.form-submit(onclick="submitData()") Log in
+// JS
+script.
+   function submitData(){
+     let data = {
+     	user: document.getElementById('your_name').value,
+     	password: document.getElementById('your_pass').value,
+     }
+
+     let status = "";
+
+     fetch('/patientauth', {
+     	headers: {
+     		'Content-Type' : 'application/json',
+     	},
+     	method: 'POST',
+     	body: JSON.stringify(data),
+     }).then(res => res.json()).then(res => {
+     	if(res.status === "OK"){
+           window.location.href = res.redirect;	
+     	}
+     }).catch(err => console.error('Error: ',err))
+   }
+// This templates was made by Colorlib (https://colorlib.com)

@@ -28,8 +28,22 @@ class CRUD{
 
 
 
-	readRecordByID(){
-				
+	readRecordByID(id){
+		this.db.all('SELECT * FROM records WHERE id = ?', [id], (err, rows) => {
+			if(err){
+				reject(err);
+				return;
+			}
+
+			const queryResult = rows.map(  row => {
+				console.log(row);
+				return new recordFile.Record(row.id, row.patientId, row.patientname, row.date, row.imagespath);
+			});
+
+			resolve(queryResult);
+
+			
+		})			
 	}
 
 	readRecordsByPatientId(){
