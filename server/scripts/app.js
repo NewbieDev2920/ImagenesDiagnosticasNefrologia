@@ -4,7 +4,7 @@
 //-----------------------------
 //LOGIN PACIENTE (x)
 //DISPLAY RECORDS PACIENTE (x)
-//ENFOQUE DE RECORDS PACIENTE ()
+//ENFOQUE DE RECORDS PACIENTE (x)
 //PAGINA STATUS 404 (x)
 //PAGINA STATUS 401 ()
 //PAGINA STATUS 403? ()
@@ -32,7 +32,7 @@ const express = require('express');
 const path = require('path');
 const  app = express();
 const PORT = 3000;
-const upload = multer({dest:"uploads/"});
+const upload = multer({dest:"public/uploads/"});
 const session = require('express-session')
 
 app.use(session({
@@ -52,9 +52,16 @@ console.log('Listening on port : '+ PORT);
 console.log("\n### Request Info ###");
 console.log('HTTP METHOD | URL  ROUTE | IP | TIME');
 
+
+
 app.get('/', (req,res) => {
-	console.log("GET | / | "+ req.ip+ " | "+ Date())
+	console.log("GET | / | "+ req.ip+ " | "+ Date());
 	res.render('index');
+})
+
+app.get('/home', (req, res) => {
+	console.log("GET | / | "+ req.ip+ " | "+ Date());
+	res.render('home');
 })
 
 app.get('/mediclogin', (req,res) => {
@@ -74,12 +81,11 @@ app.get('/patientrecordcatalog', (req, res) =>{
 
 app.get('/focusrecord', (req, res) => {
 	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
-	const id = req.query.id;
-	console.log(id);
-	/*crud.readRecordById(id).then(q => {
-		res.render('focusrecord', q);	
-	})*/
-	res.render('focusrecord', {identifier : id});
+	crud.readRecordByID(req.query.id).then( q => {
+		//JSON RECORD(q[0]) id,  patientName, patientId, date, imagesPath
+		q[0].imagesPath = JSON.parse(q[0].imagesPath);
+		res.render('focusrecord', q[0]);	
+	});
 	
 })
 
@@ -92,7 +98,6 @@ app.get('/getrecords', (req, res) =>{
 	console.log("GET | /getrecords | "+ req.ip+ " | "+ Date());
 	console.log(req.session.profile.id);
 	crud.readRecordsByPatientId(req.session.profile.id).then(q => {
-		console.log('mostrar q : ',q);
 		res.json({recordList: JSON.stringify(q)});
 	});
 	

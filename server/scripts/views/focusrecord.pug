@@ -6,30 +6,31 @@ head
   title Sign Up Form by Colorlib
   // Font Icon
   link(rel='stylesheet' href='fonts/material-icon/css/material-design-iconic-font.min.css')
+  link(rel='stylesheet' href='images/recordfocusimagedisplay.css')
   // Main css
   link(rel='stylesheet' href='css2/style.css')
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 .main
   section.sign-in
     .container
       .signin-content
         .signin-image
           figure
-            img(src='images/logo.jpeg' alt='sing up image')
+            //display Images
+            .images
+               each path in imagesPath
+                  img(src="../"+path, alt="img examen", width="300", height="200")
+            #image-viewer
+               span.close X
+               img#full-image.modal-content
         .signin-form
-          h2.form-title=identifier+"Holaaa"
-          form#login-form.register-form(method='POST')
-            .form-group
-              label(for='your_name')
-                i.zmdi.zmdi-account.material-icons-name
-              input#your_name(type='text' name='your_name' placeholder='Your Name')
-            .form-group
-              label(for='your_pass')
-                i.zmdi.zmdi-lock
-              input#your_pass(type='password' name='your_pass' placeholder='Password')
-            .form-group
-            .form-group.form-button
-              a#signin.form-submit(onclick="submitData()") Log in
+          //record info
+          h2 tienes cancer! uwu
+          h2.form-title="Examen de "+patientName
+          h3="Fecha : "+date
+          h3="Cedula : "+patientId
 // JS
+script(src="images/recordfocusimagedisplay.js")
 script.
    function submitData(){
      let data = {
@@ -52,3 +53,4 @@ script.
      }).catch(err => console.error('Error: ',err))
    }
 // This templates was made by Colorlib (https://colorlib.com)
+
