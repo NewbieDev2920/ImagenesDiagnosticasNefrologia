@@ -12,36 +12,100 @@ html(lang="en")
       .header-auth Nombre Medico
     .content
       .catalog-background
-        .catalog-controls
-          a#create(href="/createrecord") Crear Registro
-          textarea#searchbar(name="searchbar")
-          a#searchbar-button(href="/search") Buscar
-        hr
-        .catalog-list
-          .catalog-info Formato: Paciente | Medico | Fecha
-          ul
-            li
-              .record-info 123
-              a.record-control Ver Registro
-            li
-              .record-info 456
-              a.record-control Ver Registro
-            li
-              .record-info 789
-              a.record-control Ver Registro
-            li
-              .record-info 789
-              a.record-control Ver Registro
-            li
-              .record-info 789
-              a.record-control Ver Registro
-            li
-              .record-info 789
-              a.record-control Ver Registro
-            li
-              .record-info 789
-              a.record-control Ver Registro
-            li
-              .record-info 789
-              a.record-control Ver Registro
-          a#createpatient(href="/createpatient") Crear Paciente
+        .column-left
+          form(action="/newrecord" method="post" id="form")
+            label(for="lastname") Buscar Paciente
+            input#lastname(type="text", name="lastname", onkeydown="refreshSearchBar()")
+            br
+            br
+            a#newpatient(href = "/createpatient") Nuevo Paciente
+            br
+            a#newrecord(href = "/createrecord") Nuevo Registro
+        .column-right
+          #container-data
+script.
+    let oldValue;
+    let dataContainer = document.getElementById('container-data');
+    let selectedPatientName;
+    let selectedPatientId;
+
+    function displayPatientList(currentPatientList){
+    	dataContainer.innerHTML = "";
+    	for(let i = 0; i < currentPatientList.length; i++){
+    		let patient = currentPatientList[i];
+    		dataContainer.innerHTML += `
+            <div class="container-patient">
+                <div class="patient-data">
+                    <div class="patient-name">${patient.firstName}</div>
+                    <div class = "patient-id">${patient.id}</div>
+                </div>
+                <a class="add-patient" href="/patientrecordcatalog?id=${patient.id}&patientname=${patient.lastName}">Seleccionar</a>
+            </div>
+    		`;
+    		
+    	}
+    }
+	
+    function refreshSearchBar() {
+    	let currentPatientList;
+        let newValue = document.getElementById('lastname').value;
+        if (oldValue !== newValue) {
+            oldValue = newValue;
+            console.log(newValue);
+            let firstChar = newValue.charAt(0);
+            
+            // Determine search type
+            let searchType = isNaN(parseInt(firstChar)) ? 1 : 0;
+            
+            // Construct query parameters
+            const params = new URLSearchParams({
+                text: newValue,
+                searchType: searchType
+            });
+    
+            fetch(`/searchPatient?${params}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then((response) => response.json())
+            .then((data) => {console.log('Success:', data); currentPatientList = data; displayPatientList(currentPatientList);})
+            .catch((error) => console.error('ERROR:', error));
+        }
+        
+    }
+
+    function insertImage(){
+        console.log('I was clicked!');
+    	let imagesContainer = document.getElementById("patient-images-container");
+        let newInput = document.createElement('input');    	
+        imagesContainer.appendChild(newInput);
+        //input.images(type="file")
+        newInput.setAttribute('class','images');
+        newInput.setAttribute('type','file');
+        
+    }
+
+    document.getElementById('form').addEventListener("submit",submitData);
+    
+    function submitData(e){
+          e.preventDefault();
+          let htmlImages = document.getElementById("images");
+          const formData = new FormData();
+          for(let i=0; i < htmlImages.files.length; i++ ){
+          	let imageFile = htmlImages.files[i];
+          	formData.append('files', imageFile);
+          }
+          formData.append('date', ''+ Date());
+          formData.append('name', selectedPatientName);
+          formData.append('id', selectedPatientId);
+          formData.append('observations', document.getElementById('observations').value);
+          fetch('/newrecord',{
+          	method : 'POST',
+          	body : formData
+          }).then((response) => response.json()).then((data) => {console.log('Success:',data.status); document.getElementById('responseMsg').value = "REGISTRO CREADO."}).catch((error) => console.error('ERROR:', error));
+          
+          
+    }
+	

@@ -37,6 +37,8 @@ header{
     border-radius: 2px;
     border-color:#888888;
     border-style:ridge;
+    display: flex;
+    justify-content:left; 
 }
 
 .catalog-controls{
@@ -108,3 +110,108 @@ li:nth-child(odd){
     text-decoration: none;
     border-radius: 1.2px;
 }
+
+.column-left{
+    padding: 30px;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.column-left textarea{
+    margin-top: 20px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.column-right{
+	display: flex;
+	flex-direction: column;
+    padding: 30px;
+    width: 50vw;
+}
+
+#submitrecord{
+	background-color: #00994d;
+	color: white;
+	border-radius: 2px;
+	text-decoration:none;
+	padding: 12px;
+}
+
+#cancelrecord{
+	background-color: #db3030;
+	color: white;
+	border-radius: 2px;
+	text-decoration:none;
+	padding: 12px;
+}
+
+#container-data{
+	margin-bottom: 4px;
+	background-color: white;
+	height: 55vh;
+}
+
+.container-patient{
+	display:flex;
+	justify-content: space-between;
+}
+
+.patient-id{
+	color:gray;
+	font-size: 13px;
+}
+
+.add-patient{
+	background-color: #00994d;
+	color: white;
+	border-radius: 2px;
+}
+
+.add-patient:hover{
+	background-color:green;
+	cursor: pointer;
+}
+
+#insertarImagen{
+	background-color:#00994d;
+	color: white;
+	border-radius: 2px;
+	padding: 5px; 
+	margin: 7px;
+}
+
+#insertarImagen:hover{
+	cursor:pointer;
+}
+
+#newpatient{
+	background-color: green;
+	padding: 0.5rem;
+	margin-left: 2rem;
+	color: white;
+	text-decoration: none;
+}
+
+#newrecord{
+	background-color: green;
+	padding: 0.5rem;
+	margin-left: 2rem;
+	color: white;
+	text-decoration: none;
+}
+
+#form{
+	display: flex;
+}
+
+.catalog-background{
+	display:flex;
+	flex-direction: column;
+}
+
+label{
+	margin-right: 1rem;
+}
+

@@ -6,7 +6,7 @@
 //DISPLAY RECORDS PACIENTE (x)
 //ENFOQUE DE RECORDS PACIENTE (x)
 //PAGINA STATUS 404 (x)
-//PAGINA STATUS 401 ()
+//PAGINA STATUS 401 (x)
 //PAGINA STATUS 403? ()
 //ARREGLAR COSITAS ()
 //-----------------------------
@@ -20,6 +20,7 @@
 //COMPLETAR CRUD ()
 //PROTECCION ATAQUE SQLINJECTION ()
 //PROTECCION ATAQUE FUERZA BRUTA ()
+const adminPasscode = 'TEMPLARKNIGHT';
 const multer = require('multer')
 const OS  = require('os');
 const HOSTNAME = OS.hostname();
@@ -75,18 +76,31 @@ app.get('/patientlogin', (req, res) => {
 })
 
 app.get('/patientrecordcatalog', (req, res) =>{
+	
 	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
-	res.render('patientRecordCatalog', {welcome : 'Bienvenido '+ req.session.profile.firstName+'.'});
+	if(req.session.type === "patient"){
+		res.render('patientRecordCatalog', {welcome : 'Bienvenido '+ req.session.profile.firstName+'.', usertype : 'patient', id: null});	
+	}else if(req.session.type === "medic"){
+		res.render('patientRecordCatalog', {welcome : 'Paciente '+ req.query.patientname, usertype : 'medic', id: req.query.id});
+	}
+	else{
+		res.render('401');
+	}
 })
 
 app.get('/focusrecord', (req, res) => {
-	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
-	crud.readRecordByID(req.query.id).then( q => {
-		//JSON RECORD(q[0]) id,  patientName, patientId, date, imagesPath
-		q[0].imagesPath = JSON.parse(q[0].imagesPath);
-		res.render('focusrecord', q[0]);	
-	});
-	
+	if(req.session.type != 'patient'){
+		console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
+		crud.readRecordByID(req.query.id).then( q => {
+			//JSON RECORD(q[0]) id,  patientName, patientId, date, imagesPath
+			q[0].imagesPath = JSON.parse(q[0].imagesPath);
+			res.render('focusrecord', q[0]);	
+		});
+				
+	}
+	else{
+		res.render('401');
+	}	
 })
 
 app.get('/css2/:filename', (req, res) => {
@@ -95,65 +109,112 @@ app.get('/css2/:filename', (req, res) => {
 
 
 app.get('/getrecords', (req, res) =>{
-	console.log("GET | /getrecords | "+ req.ip+ " | "+ Date());
-	console.log(req.session.profile.id);
-	crud.readRecordsByPatientId(req.session.profile.id).then(q => {
-		res.json({recordList: JSON.stringify(q)});
-	});
-	
+	if(req.session.type != 'patient'){
+		res.render('401');
+	}
+	else{
+				
+	}
+})
+
+app.get('/getrecordsmediclevel', (req, res) =>{
+	if(req.session.type != 'medic'){
+		res.render('401');
+	}
+	else{
+		console.log("GET | /getrecords | "+ req.ip+ " | "+ Date());
+		console.log(req.query.id);
+		crud.readRecordsByPatientId(req.query.id).then(q => {
+				res.json({recordList: q});
+		});
+	}
 })
 
 app.get('/catalog', (req, res) =>{
-	console.log("GET | /catalog | "+ req.ip+ " | "+ Date());
-	res.render('catalog')
+	if(req.session.type != 'medic'){
+		res.render('401');
+	}else{
+		console.log("GET | /catalog | "+ req.ip+ " | "+ Date());
+		res.render('catalog');		
+	}
+
 })
 
 app.get('/createrecord', (req, res) => {
-	console.log("GET | /createrecord | "+ req.ip+ " | "+ Date());
-	res.render('createRecord')
+	if(req.session.type != 'medic'){
+		res.render('401');
+	}else{
+		console.log("GET | /createrecord | "+ req.ip+ " | "+ Date());
+		res.render('createRecord');	
+	}
+	
 })
 
 app.get('/createpatient', (req,res) =>{
-	console.log("GET | /createpatient | "+ req.ip + " | "+ Date());
-	res.render('createPatient');
+	if(req.session.type != 'medic'){
+		res.render('401');
+	}else{
+		console.log("GET | /createpatient | "+ req.ip + " | "+ Date());
+		res.render('createPatient');			
+	}
 	
 })
 
 app.post('/newrecord', upload.array("files"),(req, res) => {
-	console.log('POST | /newrecord | '+ req.ip+' | '+ Date());
-	console.log(req.body);
-	console.log(req.files);
-	let imagesPaths = [];
-	for(let i = 0; i < req.files.length; i++){
-		imagesPaths.push(req.files[i].path);
+	if(req.session.type != 'medic'){
+		res.render('401');
+	}else{
+		console.log('POST | /newrecord | '+ req.ip+' | '+ Date());
+		console.log(req.body);
+		console.log(req.files);
+		let imagesPaths = [];
+		for(let i = 0; i < req.files.length; i++){
+			imagesPaths.push(req.files[i].path);
+		}
+		let record = new recordFile.Record(null,req.body.id, req.body.name, req.body.date, imagesPaths);
+		crud.createRecord(record);
+		res.json({status : "OK"});	
 	}
-	let record = new recordFile.Record(null,req.body.id, req.body.name, req.body.date, imagesPaths);
-	crud.createRecord(record);
-	res.json({status : "OK"});
+	
 })
 
 app.post('/newpatient', (req, res) => {
-	console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
-	console.log(req.body);
-	let patient = new patientFile.Patient(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
-	crud.createPatient(patient);
+	if(req.session.type != 'medic'){
+		res.render('401');
+	}else{
+		console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
+		console.log(req.body);
+		let patient = new patientFile.Patient(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
+		crud.createPatient(patient);							
+	}
 	
 })
 
 app.post('/newmedic', (req, res) =>{
     console.log('POST | /newmedic | '+ req.ip +' | '+ Date());
-	console.log(req.body);
-	let medic = new medicFile.Medic(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
-	crud.createMedic(medic);
+    if(req.session.admin){
+		console.log(req.body);
+		let medic = new medicFile.Medic(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
+		crud.createMedic(medic);    	
+    }
+	
 	
 })
 
 app.get('/terminal', (req,res) =>{
-	res.render('terminal');
+	if(req.session.admin){
+		res.render('terminal');	
+	}else{
+		res.render('401');
+	}
 })
 
 app.get('/admin', (req, res) =>{
-	res.render('admin');
+	if(req.session.admin){
+		res.render('admin');	
+	}else{
+		res.render('401');
+	}
 })
 
 app.post('/medicauth', (req,res)=>{
@@ -166,7 +227,8 @@ app.post('/medicauth', (req,res)=>{
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
 			req.session.profile = new medicFile.Medic(q[0].lastName, q[0].firstName, q[0].id, null);
-			res.redirect('/sess'); 
+			req.session.type = 'medic';
+			res.json({status : 'OK', redirect : '/catalog'}) 
 		}else{
 			console.log('INTERNAL ERROR');
 		}
@@ -185,76 +247,78 @@ app.post('/patientauth', (req, res) => {
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
 			req.session.profile = new patientFile.Patient(q[0].lastName, q[0].firstName, q[0].id, null);
+			req.session.type = 'patient';
 			res.json({status : 'OK', redirect : '/patientrecordcatalog'});
 			
 		}
 	})	
 })
 
-app.post('/medicauth', (req, res) =>{
-	console.log(req.body.user);
-})
-
-app.get('/sess', (req, res) => {
-	console.log(req.session.profile);
-    if (req.session.profile) {
-        res.send('Hello ' + req.session.profile.id);  // Session data is available
-    } else {
-        res.send('Session not set or expired');
-    }
-});
-
-
 app.get('/searchPatient', (req, res) =>{
-	console.log('GET | /searchPatient | '+ req.socket.remoteAddress +' | '+ Date());
-	let queryResult;
-	if(req.query.searchType == 0){
-		crud.readByPatientId(req.query.text).then(q => {
-			queryResult = q;
-			res.json(queryResult);
-		});
-	}
-	else if(req.query.searchType == 1){
-		 crud.readByPatientName(req.query.text).then(q => {
-			queryResult = q;
-			console.log(queryResult);
-			res.json(queryResult);
-		});
-	}
-
-
-})
-
-app.post('/terminalExecute', (req,res) =>{
-	let command = req.body.command.split(" ");
-	//command[0] command itself, command[1] parameter.
-	if(command[0] === "/erase"){
-		crud.erase(command[1]);
-	}else if(command[0] === "/show"){
-		if(command[1]=="patients"){
-			crud.readAll();	
-		}
-		else if(command[1]=="records"){
-			crud.readAllRecords();
-		}
-		else if(command[1] == "medics"){
-			crud.readAllMedics();
-		}
-		else{
-			console.log('TABLE DOESNT EXISTS');
-		}
-	}
-	else if(command[0] === "/deleteall"){
-		crud.deleteAll();
-	}
-	else if(command[0] === "/deletetable"){
-		crud.deleteTable(command[1]);
+	if(req.session.type != 'medic'){
+		res.render('401');
 	}
 	else{
-		console.log(command[0]+" Is not a valid command");
+		console.log('GET | /searchPatient | '+ req.socket.remoteAddress +' | '+ Date());
+		let queryResult;
+		if(req.query.searchType == 0){
+			crud.readByPatientId(req.query.text).then(q => {
+				queryResult = q;
+				res.json(queryResult);
+			});
+		}
+		else if(req.query.searchType == 1){
+				crud.readByPatientName(req.query.text).then(q => {
+				queryResult = q;
+				console.log(queryResult);
+				res.json(queryResult);
+			});
+		}
+				
 	}
 	
 })
+
+app.post('/terminalExecute', (req,res) =>{
+	if(req.session.admin){
+		let command = req.body.command.split(" ");
+		//command[0] command itself, command[1] parameter.
+		if(command[0] === "/erase"){
+			crud.erase(command[1]);
+		}else if(command[0] === "/show"){
+			if(command[1]=="patients"){
+				crud.readAll();	
+			}
+			else if(command[1]=="records"){
+				crud.readAllRecords();
+			}
+			else if(command[1] == "medics"){
+				crud.readAllMedics();
+			}
+			else{
+				console.log('TABLE DOESNT EXISTS');
+			}
+		}
+		else if(command[0] === "/deleteall"){
+			crud.deleteAll();
+		}
+		else if(command[0] === "/deletetable"){
+			crud.deleteTable(command[1]);
+		}
+		else{
+			console.log(command[0]+" Is not a valid command");
+		}			
+	}
+})
+
+app.get('/adminauth', (req,res)=>{
+	if(req.query.pass === adminPasscode){
+		req.session.admin = true;
+		res.send(200);
+	}else{
+		res.send(401);
+	}
+});
 
 app.get('*', (req, res) =>{
 	res.render('404');

@@ -1,13 +1,21 @@
 head
   link(rel='stylesheet' href='css/catalogstyles.css')
-body(onload="getRecords()")
+body#main(onload="getRecords()" user=usertype patientid=id)
    .profileinfocontainer
       h1=welcome
    ol#recordlist(style='--length: 5' role='list')
 script.
 
    function getRecords(){
-      fetch('/getrecords').then(res => res.json()).then(res => {
+      let bodyElement = document.getElementById('main');
+      let correspondingURL;
+   	  if(bodyElement.getAttribute('user') === "patient"){
+   	  	correspondingURL = '/getrecords';
+   	  }
+   	  else if(bodyElement.getAttribute('medic') === 'medic'){
+   	  	correspondingURL = '/getrecordsmediclevel?id='+bodyElement.getAttribute('patientid');
+   	  }
+      fetch(correspondingURL).then(res => res.json()).then(res => {
         let recordList = document.getElementById('recordlist');
       	let displayList = JSON.parse(res.recordList);
       	for(let i = 0; i < displayList.length; i++){

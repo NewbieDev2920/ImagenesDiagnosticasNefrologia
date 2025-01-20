@@ -20,7 +20,6 @@ script.
 
         // Add an onclick event listener
         button.addEventListener('click', () => {
-            alert('Button clicked!');
             submitData();
         });
     });
@@ -40,6 +39,10 @@ script.
             body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res => {
+        	if(res.status === "OK"){
+        		window.location.href = res.redirect;
+        	}
+        })
         .catch(err => console.error('Error:', err));
     }
