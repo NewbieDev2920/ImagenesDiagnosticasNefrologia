@@ -5,34 +5,32 @@ body#main(onload="getRecords()" user=usertype patientid=id)
       h1=welcome
    ol#recordlist(style='--length: 5' role='list')
 script.
-
-   function getRecords(){
+  function getRecords() {
       let bodyElement = document.getElementById('main');
       let correspondingURL;
-   	  if(bodyElement.getAttribute('user') === "patient"){
-   	  	correspondingURL = '/getrecords';
-   	  }
-   	  else if(bodyElement.getAttribute('medic') === 'medic'){
-   	  	correspondingURL = '/getrecordsmediclevel?id='+bodyElement.getAttribute('patientid');
-   	  }
-      fetch(correspondingURL).then(res => res.json()).then(res => {
-        let recordList = document.getElementById('recordlist');
-      	let displayList = JSON.parse(res.recordList);
-      	for(let i = 0; i < displayList.length; i++){
-      		console.log(i+1, displayList[i]);
-      		recordList.innerHTML += `<li style="--i: 5">
-      		      	      <h3>Examen de ${displayList[i].patientName}</h3>
-      		      	      <p>${displayList[i].date}</p>
-      		      	      <br>
-      		      	      <br>
-      		      	      <a class="focusbutton" href="/focusrecord?id=${displayList[i].id}">Ver</div>
-      		      	    </li>`;
-      	}
-      	
-      	
-      }).catch(err => console.error(':( ', err))
-   }
 
-   function focusRecord(recordId){
-      fetch(`/focusrecord?id=${recordId}`);
-   }
+      if (bodyElement.getAttribute('user') === "patient") {
+          correspondingURL = '/getrecords';
+      } else if (bodyElement.getAttribute('user') === 'medic') {
+          correspondingURL = '/getrecordsmediclevel?id=' + bodyElement.getAttribute('patientid');
+      }
+
+      fetch(correspondingURL)
+          .then(res => res.json())
+          .then(res => {
+              let recordList = document.getElementById('recordlist');
+              let displayList = res.recordList;
+              for (let i = 0; i < displayList.length; i++) {
+                  console.log(i + 1, displayList[i]);
+                  recordList.innerHTML += `<li style="--i: 5">
+                                              <h3>Examen de ${displayList[i].patientName}</h3>
+                                              <p>${displayList[i].date}</p>
+                                              <br>
+                                              <br>
+                                              <a class="focusbutton" href="/focusrecord?id=${displayList[i].id}">Ver</div>
+                                          </li>`;
+              }
+          })
+          .catch(err => console.error(':( ', err));
+  }
+

@@ -14,13 +14,48 @@
 //-----------------------------
 //LANDING PAGE ()
 //VALIDACIONES ()
+//PROBLEMA DE SEGURIDAD IMAGENES PUBLICAS ()
 //-----------------------------
 // v1.1
 //-----------------------------
 //COMPLETAR CRUD ()
 //PROTECCION ATAQUE SQLINJECTION ()
 //PROTECCION ATAQUE FUERZA BRUTA ()
-const adminPasscode = 'TEMPLARKNIGHT';
+//-----------------------------
+// CAMPOS PACIENTE
+//-----------------------------
+//FECHA REGISTRO
+//APELLIDO Y NOMBRE
+//ID/CC
+//FECHA DE NACIMIENTO
+//TELEFONO
+//CORREO
+//PRESTADORES
+//USUARIO
+//CONTRASENA
+//-----------------------------
+// REGISTRO
+//-----------------------------
+//FECHA
+//ID
+//IDPACIENTE
+//IDMEDICO
+//ESTUDIO
+//VALOR
+//PRESTADOR
+//IMGPATH
+//FECHA
+//ASUNTO
+//OBSERVACIONES
+//-----------------------------
+// MEDICO
+//-----------------------------
+//APPELIDO Y NOMBRE
+//ID
+//CONTRASENA
+//CORREO
+//NUMERO DE TELEFONO
+const config = require('./config.json');
 const multer = require('multer')
 const OS  = require('os');
 const HOSTNAME = OS.hostname();
@@ -32,9 +67,8 @@ let medicFile = require('./models/Medic');
 const express = require('express');
 const path = require('path');
 const  app = express();
-const PORT = 3000;
 const upload = multer({dest:"public/uploads/"});
-const session = require('express-session')
+const session = require('express-session');
 
 app.use(session({
 	secret: "clave super secreta",
@@ -49,7 +83,7 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 console.log('HOSTNAME : '+ HOSTNAME);
-console.log('Listening on port : '+ PORT);
+console.log('Listening on port : '+ config.PORT);
 console.log("\n### Request Info ###");
 console.log('HTTP METHOD | URL  ROUTE | IP | TIME');
 
@@ -58,11 +92,17 @@ console.log('HTTP METHOD | URL  ROUTE | IP | TIME');
 app.get('/', (req,res) => {
 	console.log("GET | / | "+ req.ip+ " | "+ Date());
 	res.render('index');
-})
+});
 
-app.get('/home', (req, res) => {
-	console.log("GET | / | "+ req.ip+ " | "+ Date());
-	res.render('home');
+app.get('/landing', (req, res) => {
+	console.log("GET | /landing | "+ req.ip+ " | "+ Date());
+	res.render('landingpage');
+});
+
+app.post('/contact',(req, res) =>{
+	console.log("GET | /landing | "+ req.ip+ " | "+ Date());
+	console.log(JSON.parse(req.body));
+	res.redirect('/landing');
 })
 
 app.get('/mediclogin', (req,res) => {
@@ -312,7 +352,7 @@ app.post('/terminalExecute', (req,res) =>{
 })
 
 app.get('/adminauth', (req,res)=>{
-	if(req.query.pass === adminPasscode){
+	if(req.query.pass === config.adminPasscode){
 		req.session.admin = true;
 		res.send(200);
 	}else{
@@ -324,4 +364,4 @@ app.get('*', (req, res) =>{
 	res.render('404');
 })
 
-app.listen(PORT);
+app.listen(config.PORT);

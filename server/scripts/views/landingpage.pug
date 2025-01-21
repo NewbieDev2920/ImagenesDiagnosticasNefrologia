@@ -1,8 +1,7 @@
 doctype html
-
 html
   head
-    title Theory by TEMPLATED
+    title Imagenes diagnosticas y nefrlogia
     meta(charset="utf-8")
     meta(name="robots", content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1")
     meta(name="viewport", content="width=device-width, initial-scale=1")
@@ -20,8 +19,8 @@ html
           span.fa.fa-bars
     // Banner
     section#banner
-      h1 Welcome to Theory
-      p A free responsive HTML5 website template by TEMPLATED.
+      h1 IMAGENES DIAGNOSTICAS Y NEFROLOGIA
+      p Servicio de radiologia y nefrologia de alta calidad hecho por especialistas.
     // One
     section#one.wrapper
       .inner
@@ -81,17 +80,20 @@ html
     section#three.wrapper.special
       .inner
         header.align-center
-          h2 Nunc Dignissim
-          p Aliquam erat volutpat nam dui 
+          h2 Contactanos
+          p Agrega tus datos personales para ponernos en contacto. 
         .flex.flex-2
           article
-            .image.fit
-              img(src="home/images/pic01.jpg", alt="Pic 01", width="576", height="196")
-            header
-              h3 Praesent placerat magna
-            p Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor lorem ipsum.
-            footer
-              a.button.special(href="#") More
+            form(action="/contact" method="post")
+               label(for="email") Email / Correo Electronico
+               input#email(type="email")
+               label(for="cellphone") Numero de telefono
+               input#cellphone(type="text")
+               label(for="names") Nombre y apellido
+               input#names(type="text")
+               label(for="issue") Asunto o sugerencia
+               input#issue(type="text")
+               input#submitbutton(type="submit" value="Enviar")
           article
             .image.fit
               img(src="home/images/pic02.jpg", alt="Pic 02", width="576", height="196")
