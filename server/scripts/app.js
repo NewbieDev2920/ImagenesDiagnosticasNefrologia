@@ -101,7 +101,7 @@ app.get('/landing', (req, res) => {
 
 app.post('/contact',(req, res) =>{
 	console.log("GET | /landing | "+ req.ip+ " | "+ Date());
-	console.log(JSON.parse(req.body));
+	console.log(req.body);
 	res.redirect('/landing');
 })
 

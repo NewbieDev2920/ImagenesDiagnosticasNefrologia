@@ -10,42 +10,28 @@ html
     // Header
     header#header
       .inner
-        a.logo(href="index.html") Theory
-        nav#nav
-          a(href="index.html") Home
-          a(href="generic.html") Generic
-          a(href="elements.html") Elements
+        a.logo(href="/landingpage")
+          a(href="/patientlogin") Pacientes
+          a(href="/mediclogin") Medicos
         a.navPanelToggle(href="#navPanel")
           span.fa.fa-bars
     // Banner
     section#banner
       h1 IMAGENES DIAGNOSTICAS Y NEFROLOGIA
-      p Servicio de radiologia y nefrologia de alta calidad hecho por especialistas.
+      p Servicio de imagenes diagnosticas y nefrologia de alta calidad realizado por especialistas.
     // One
     section#one.wrapper
       .inner
-        .flex.flex-3
+        .flex.flex-2
           article
             header
-              h3 Magna tempus sed amet
-                br
-                | aliquam veroeros
+              h3 Imagenes
             p Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu.
             footer
               a.button.special(href="#") More
           article
             header
-              h3 Interdum lorem pulvinar
-                br
-                | adipiscing vitae
-            p Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu.
-            footer
-              a.button.special(href="#") More
-          article
-            header
-              h3 Libero purus magna sapien
-                br
-                | sed ullamcorper
+              h3 Nefrologia
             p Morbi interdum mollis sapien. Sed ac risus. Phasellus lacinia, magna a ullamcorper laoreet, lectus arcu.
             footer
               a.button.special(href="#") More
@@ -84,7 +70,7 @@ html
           p Agrega tus datos personales para ponernos en contacto. 
         .flex.flex-2
           article
-            form(action="/contact" method="post")
+            form(action="/contact" method="post" onsubmit="event.preventDefault(); contact();")
                label(for="email") Email / Correo Electronico
                input#email(type="email")
                label(for="cellphone") Numero de telefono
@@ -130,3 +116,22 @@ html
     script(src="home/assets/js/skel.min.js")
     script(src="home/assets/js/util.js")
     script(src="home/assets/js/main.js")
+script.
+    function contact(){
+        const data = {
+            email: document.getElementById("email").value,
+            names: document.getElementById("names").value,
+            phone: document.getElementById("cellphone").value,
+            issue: document.getElementById("issue").value
+        };
+        fetch('/contact', {
+            method: 'POST',
+        	headers: {'Content-Type':'application/json'},
+            body : JSON.stringify(data)
+        });
+        document.getElementById("email").value = "";
+        document.getElementById("names").value = "";
+        document.getElementById("cellphone").value = "";
+        document.getElementById("issue").value = "";
+        document.getElementById("submitbutton").value = "Enviado";
+    }

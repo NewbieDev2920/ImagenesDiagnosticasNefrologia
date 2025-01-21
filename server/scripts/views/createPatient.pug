@@ -1,4 +1,4 @@
-sdoctype
+doctype
 html(lang="en")
   head
     meta(charset="UTF-8")
@@ -22,12 +22,49 @@ html(lang="en")
             input#firstname(type="text", name="firstname")
             br
             br
+            label(for='idtype') Tipo de identificacion
+            select#idtype(name='idtype')
+               option(value="C.C") Cedula de ciudadania
+               option(value="PASS") Pasaporte
+               option(value="T.I") Tarjeta de identidad
+               option(value="R.C") Registro civil
+               option(value="C.E") Cedula de extranjeria
+            br
+            br
             label(for="id") ID
             input#id(type="text", name="id")
             br
             br
+            label(for="birthdate") Fecha de nacimiento
+            input#birthdate(type="date" name="birthdate")
+            br
+            br
+            label(for="cellphone") Celular
+            input#cellphone(type="text" name="cellphone")
+            br
+            br
+            label(for="email") Correo
+            input#email(type="email" name="email")
+            br
+            br
+            label(for="user") Usuario
+            input#user(type="text" name="user")
+            br
+            br
+            //PRESTADORES
+            label(for="sponsor") Prestadores
+            select#sponsor(name='sponsor')
+               option(value="C.C") Cedula de ciudadania
+               option(value="PASS") Pasaporte
+               option(value="T.I") Tarjeta de identidad
+               option(value="R.C") Registro civil
+               option(value="C.E") Cedula de extranjeria
+            br
+            br
             label(for="password") Contraseña
             input#password(type="password", name="password")
+            br
+            br
           p#operation-message
         .column-right
           .container-image

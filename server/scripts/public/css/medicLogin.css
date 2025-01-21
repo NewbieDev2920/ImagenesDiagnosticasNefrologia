@@ -40,6 +40,10 @@ body{
     letter-spacing: 3.5px;
 }
 
+.button:hover{
+	cursor: pointer;	
+}
+
 #logo{
     width: 270px;
     height: 180px;

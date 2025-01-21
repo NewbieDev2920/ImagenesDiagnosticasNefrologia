@@ -30,6 +30,13 @@ html(lang="en")
             input#observations(type="text", name="observations" placeholder="Opcional")
             br
             br
+            label(for='study') Estudio
+            select(name="study")
+               option(value="ECO") Ecografia
+               option(value ="RES") Resonancia
+               option(value ="RAYX") Rayos X
+            br
+            br
             input(type="submit", value="Submit")
             p#responseMsg(style="color:green;")
         .column-right
