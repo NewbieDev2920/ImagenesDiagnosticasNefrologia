@@ -22,6 +22,15 @@ html(lang="en")
           label(for='id') Cedula:
           input#id(type='text', name='id', required)
         div
+          label(for='email') Correo:
+          input#email(type='email', name='email', required)
+        div
+          label(for='cellphone') Celular:
+          input#cellphone(type='text', name='cellphone', required)
+        div
+          label(for='user') Usuario:
+          input#user(type='text', name='user', required)
+        div
           label(for='password') Contraseña:
           input#password(type='password', name='password', required)
         button(type='submit') Enviar
@@ -33,9 +42,11 @@ html(lang="en")
 
           // Gather the form data
           const data = {
-              lastname: document.getElementById('lastname').value,
-              firstname: document.getElementById('firstname').value,
+              fullname: document.getElementById('lastname').value + " " + document.getElementById("firstname").value,
               id: document.getElementById('id').value,
+              email: document.getElementById("email"),value,
+              cellphone: document.getElementById("cellphone").value,
+              user: document.getElementById("user").value,
               password: document.getElementById('password').value
           };
 

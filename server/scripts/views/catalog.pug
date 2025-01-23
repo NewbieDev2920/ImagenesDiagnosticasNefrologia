@@ -36,10 +36,10 @@ script.
     		dataContainer.innerHTML += `
             <div class="container-patient">
                 <div class="patient-data">
-                    <div class="patient-name">${patient.firstName}</div>
+                    <div class="patient-name">${patient.fullname}</div>
                     <div class = "patient-id">${patient.id}</div>
                 </div>
-                <a class="add-patient" href="/patientrecordcatalog?id=${patient.id}&patientname=${patient.lastName}">Seleccionar</a>
+                <a class="add-patient" href="/patientrecordcatalog?id=${patient.id}&patientname=${patient.fullname}">Seleccionar</a>
             </div>
     		`;
     		

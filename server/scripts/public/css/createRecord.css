@@ -132,19 +132,24 @@ li:nth-child(odd){
 }
 
 #submitrecord{
-	background-color: #00994d;
+	background-color: #4c5be0;
 	color: white;
 	border-radius: 2px;
 	text-decoration:none;
 	padding: 12px;
 }
 
+#submitrecord:hover{
+	cursor:pointer;
+}
+
 #cancelrecord{
-	background-color: #db3030;
+	background-color: #8756e3;
 	color: white;
 	border-radius: 2px;
 	text-decoration:none;
 	padding: 12px;
+	margin-left:1rem;
 }
 
 #container-data{
@@ -164,13 +169,13 @@ li:nth-child(odd){
 }
 
 .add-patient{
-	background-color: #00994d;
+	background-color: #4c5be0;
 	color: white;
 	border-radius: 2px;
 }
 
 .add-patient:hover{
-	background-color:green;
+	background-color:#6e7df2;
 	cursor: pointer;
 }
 
@@ -184,4 +189,8 @@ li:nth-child(odd){
 
 #insertarImagen:hover{
 	cursor:pointer;
+}
+
+label{
+	display:block;
 }

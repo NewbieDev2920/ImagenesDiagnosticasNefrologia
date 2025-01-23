@@ -22,19 +22,27 @@ html(lang="en")
             input#clinichistory(type="text", name="clinichistory")
             br
             br
-            div#patient-images-container Lista de imagenes
+            label(for="images") Lista de imagenes
+            div#patient-images-container
                input#images(type="file" multiple)
-            br
-            br
-            label(for="observations") Observaciones
-            input#observations(type="text", name="observations" placeholder="Opcional")
-            br
             br
             label(for='study') Estudio
             select(name="study")
                option(value="ECO") Ecografia
                option(value ="RES") Resonancia
                option(value ="RAYX") Rayos X
+            br
+            br
+            label(for="price") Valor
+            input#price(type="text", name="price")
+            br
+            br
+            label(for="case") Asunto
+            input#case(type="text", name="case")
+            br
+            br
+            label(for="observations") Observaciones
+            input#observations(type="text", name="observations" placeholder="Opcional")
             br
             br
             input(type="submit", value="Submit")

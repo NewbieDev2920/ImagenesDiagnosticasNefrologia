@@ -31,7 +31,7 @@ header{
 }
 
 .catalog-background{
-    background-color:#efeff5;
+    background-color:#f2f3f7;
     width: 75vw;
     height:80vh;
     border-radius: 2px;
@@ -151,6 +151,7 @@ li:nth-child(odd){
 	margin-bottom: 4px;
 	background-color: white;
 	height: 55vh;
+
 }
 
 .container-patient{
@@ -164,13 +165,16 @@ li:nth-child(odd){
 }
 
 .add-patient{
-	background-color: #00994d;
+	background-color: #4c5be0;
 	color: white;
 	border-radius: 2px;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	text-decoration:none;
 }
 
 .add-patient:hover{
-	background-color:green;
+	background-color: #7a87f5;
 	cursor: pointer;
 }
 
@@ -187,19 +191,21 @@ li:nth-child(odd){
 }
 
 #newpatient{
-	background-color: green;
+	background-color: #4c5be0;
 	padding: 0.5rem;
 	margin-left: 2rem;
 	color: white;
 	text-decoration: none;
+	border-radius: 2px;
 }
 
 #newrecord{
-	background-color: green;
+	background-color: #4c5be0;
 	padding: 0.5rem;
 	margin-left: 2rem;
 	color: white;
 	text-decoration: none;
+	border-radius: 2px;
 }
 
 #form{

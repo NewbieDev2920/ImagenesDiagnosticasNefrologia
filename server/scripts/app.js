@@ -7,6 +7,9 @@
 //ENFOQUE DE RECORDS PACIENTE (x)
 //PAGINA STATUS 404 (x)
 //PAGINA STATUS 401 (x)
+//PAGINA STATUS 503 ()
+//CAMBIO DE CAMPOS ()
+//RECUERDA MODIFICAR AUTHENTICATION PARA EVITAR SQLINJECTION ()
 //PAGINA STATUS 403? ()
 //ARREGLAR COSITAS ()
 //-----------------------------
@@ -52,6 +55,7 @@
 //-----------------------------
 //APPELIDO Y NOMBRE
 //ID
+//USUARIO
 //CONTRASENA
 //CORREO
 //NUMERO DE TELEFONO
@@ -119,7 +123,8 @@ app.get('/patientrecordcatalog', (req, res) =>{
 	
 	console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
 	if(req.session.type === "patient"){
-		res.render('patientRecordCatalog', {welcome : 'Bienvenido '+ req.session.profile.firstName+'.', usertype : 'patient', id: null});	
+		console.log(req.session.profile);
+		res.render('patientRecordCatalog', {welcome : 'Bienvenido '+ req.session.profile.fullname+'.', usertype : 'patient', id: null});	
 	}else if(req.session.type === "medic"){
 		res.render('patientRecordCatalog', {welcome : 'Paciente '+ req.query.patientname, usertype : 'medic', id: req.query.id});
 	}
@@ -129,7 +134,7 @@ app.get('/patientrecordcatalog', (req, res) =>{
 })
 
 app.get('/focusrecord', (req, res) => {
-	if(req.session.type != 'patient'){
+	if(req.session.type === 'patient' || req.session.type == 'medic'){
 		console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
 		crud.readRecordByID(req.query.id).then( q => {
 			//JSON RECORD(q[0]) id,  patientName, patientId, date, imagesPath
@@ -153,7 +158,11 @@ app.get('/getrecords', (req, res) =>{
 		res.render('401');
 	}
 	else{
-				
+		console.log("GET | /getrecords | "+ req.ip+ " | "+ Date());
+		console.log(req.session.profile.id);
+		crud.readRecordsByPatientId(req.session.profile.id).then(q => {
+		res.json({recordList: q});
+		});		
 	}
 })
 
@@ -224,7 +233,7 @@ app.post('/newpatient', (req, res) => {
 	}else{
 		console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
 		console.log(req.body);
-		let patient = new patientFile.Patient(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
+		let patient = new patientFile.Patient(req.body.fullname,req.body.idtype, req.body.id, req.body.birthdate, req.body.cellphone, req.body.email, req.body.user, req.body.sponsor, req.body.password, null);
 		crud.createPatient(patient);							
 	}
 	
@@ -286,7 +295,8 @@ app.post('/patientauth', (req, res) => {
 		}
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
-			req.session.profile = new patientFile.Patient(q[0].lastName, q[0].firstName, q[0].id, null);
+			//row.fullname, row.idtype, row.id,row.birthdate, row.cellphone, row.email, row.user, row.sponsor, row.password, row.registerdate
+			req.session.profile = new patientFile.Patient(q[0].fullname, q[0].idtype, q[0].id, q[0].birthdate, q[0].cellphone, q[0].email, q[0].user, q[0].sponsor, null, q[0].registerdate);
 			req.session.type = 'patient';
 			res.json({status : 'OK', redirect : '/patientrecordcatalog'});
 			

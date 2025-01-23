@@ -9,13 +9,13 @@ const readline = require('readline').createInterface({
 class CRUD{
 	constructor(){
 		this.db = new sqlite.Database('models/storage/patient.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
-		this.db.run('CREATE TABLE IF NOT EXISTS patients (id VARCHAR(15) PRIMARY KEY, lastname VARCHAR(50), firstname VARCHAR(50), password VARCHAR(50))');
+		this.db.run('CREATE TABLE IF NOT EXISTS patients (id VARCHAR(15) PRIMARY KEY, idtype VARCHAR(3), fullname VARCHAR(50), birthdate VARCHAR(25), cellphone VARCHAR(15), email VARCHAR(50), user VARCHAR(20), sponsor VARCHAR(15), password VARCHAR(50), registerdate VARCHAR(50))');
 		this.db.run('CREATE TABLE IF NOT EXISTS records (id VARCHAR(36) PRIMARY KEY, patientname VARCHAR(50), patientId VARCHAR(15), date VARCHAR(30), imagespath VARCHAR(400))');
 	    this.db.run('CREATE TABLE IF NOT EXISTS medics (id VARCHAR (15) PRIMARY KEY, lastname VARCHAR(50), firstname VARCHAR(50), password VARCHAR(50))')
 	}
 
     createPatient(patient){
-		this.db.run('INSERT INTO patients (id, lastname, firstname, password) VALUES (?,?,?,?)', [patient.getId(), patient.getLastName(), patient.getFirstName(), patient.getPassword()]);
+		this.db.run('INSERT INTO patients (id, idtype,fullname, birthdate,cellphone,email,user, sponsor ,password, registerdate) VALUES (?,?,?,?,?,?,?,?,?,?)', [patient.getId(), patient.getIdtype(),patient.getFullname(), patient.getBirthdate(), patient.getCellphone(), patient.getEmail(), patient.getUser(), patient.getSponsor(), patient.getPassword(), patient.getRegisterDate()]);
 	}
 
 	createRecord(record){
@@ -77,8 +77,8 @@ class CRUD{
 	readAll(){
 		this.db.all("SELECT * FROM patients", function(err, rows) {  
 		    rows.forEach(function (row) { 
-		    	let patient = new patientFile.Patient(row.lastname,row.firstname, row.id, row.password); 
-		        console.log(patient.getId(), patient.getLastName(), patient.getFirstName(), patient.getPassword());  
+		    	let patient = new patientFile.Patient(row.fullname, row.idtype, row.id,row.birthdate, row.cellphone, row.email, row.user, row.sponsor, row.password, row.registerdate); 
+		        console.log(JSON.stringify(patient));  
 		    })  
 		});
 	}
@@ -92,7 +92,7 @@ class CRUD{
 	            }
 	            
 	            const queryResult = rows.map(row => 
-	                new patientFile.Patient(row.lastname, row.firstname, row.id)
+	                new patientFile.Patient(row.fullname, row.idtype, row.id,row.birthdate, row.cellphone, row.email, row.user, row.sponsor, null, row.registerdate)
 	            );
 	            
 	            resolve(queryResult);
@@ -122,14 +122,14 @@ class CRUD{
 
 	readByPatientName(name) {
 	    return new Promise((resolve, reject) => {
-	        this.db.all("SELECT * FROM patients WHERE lastname LIKE ?", [`${name}%`], (err, rows) => {
+	        this.db.all("SELECT * FROM patients WHERE fullname LIKE ?", [`${name}%`], (err, rows) => {
 	            if (err) {
 	                reject(err);
 	                return;
 	            }
 	            
 	            const queryResult = rows.map(row => 
-	                new patientFile.Patient(row.lastname, row.firstname, row.id)
+	                new patientFile.Patient(row.fullname, row.idtype, row.id, row.birthdate, row.cellphone, row.email, row.user, row.sponsor, null, row.registerdate)
 	            );
 	            
 	            resolve(queryResult);
@@ -167,6 +167,7 @@ class CRUD{
 
 	deleteTable(tablename){
 		this.db.run("DROP TABLE "+tablename);
+		console.log('tablename', 'DELETED!!!');
 	}
 }
 module.exports.CRUD = CRUD;
