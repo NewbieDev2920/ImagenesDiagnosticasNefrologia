@@ -9,9 +9,9 @@ const readline = require('readline').createInterface({
 class CRUD{
 	constructor(){
 		this.db = new sqlite.Database('models/storage/patient.db', sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE);
-		this.db.run('CREATE TABLE IF NOT EXISTS patients (id VARCHAR(15) PRIMARY KEY, idtype VARCHAR(3), fullname VARCHAR(50), birthdate VARCHAR(25), cellphone VARCHAR(15), email VARCHAR(50), user VARCHAR(20), sponsor VARCHAR(15), password VARCHAR(50), registerdate VARCHAR(50))');
+		this.db.run('CREATE TABLE IF NOT EXISTS patients (id VARCHAR(15) PRIMARY KEY, idtype VARCHAR(3), fullname VARCHAR(50), birthdate VARCHAR(10), cellphone VARCHAR(15), email VARCHAR(50), user VARCHAR(20), sponsor VARCHAR(15), password VARCHAR(50), registerdate VARCHAR(50))');
 		this.db.run('CREATE TABLE IF NOT EXISTS records (id VARCHAR(36) PRIMARY KEY, patientname VARCHAR(50), patientId VARCHAR(15), date VARCHAR(30), imagespath VARCHAR(400))');
-	    this.db.run('CREATE TABLE IF NOT EXISTS medics (id VARCHAR (15) PRIMARY KEY, lastname VARCHAR(50), firstname VARCHAR(50), password VARCHAR(50))')
+	    this.db.run('CREATE TABLE IF NOT EXISTS medics (id VARCHAR (15) PRIMARY KEY, fullname VARCHAR(50), email VARCHAR(50), cellphone VARCHAR(15), user VARCHAR(20), password VARCHAR(50), registerdate VARCHAR(50))');
 	}
 
     createPatient(patient){
@@ -23,10 +23,8 @@ class CRUD{
 	}
 
 	createMedic(medic){
-		this.db.run('INSERT INTO medics (id, lastname, firstname, password) VALUES (?,?,?,?)', [medic.getId(), medic.getLastName(), medic.getFirstName(), medic.getPassword()]);
+		this.db.run('INSERT INTO medics (id, fullname, email, cellphone, user, password, registerdate) VALUES (?,?,?,?,?,?,?)', [medic.getId(), medic.getFullname(), medic.getEmail(), medic.getCellphone(), medic.getUser(), medic.getPassword(), medic.getRegisterDate()]);
 	}
-
-
 
 	readRecordByID(id){
 		return new Promise( (resolve, reject) => {
@@ -167,7 +165,7 @@ class CRUD{
 
 	deleteTable(tablename){
 		this.db.run("DROP TABLE "+tablename);
-		console.log('tablename', 'DELETED!!!');
+		console.log("TABLE NAMED : ",tablename, 'DELETED!!!');
 	}
 }
 module.exports.CRUD = CRUD;

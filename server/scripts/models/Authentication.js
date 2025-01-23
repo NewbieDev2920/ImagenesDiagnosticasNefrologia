@@ -15,7 +15,7 @@ class Authentication{
 			            }
 			            
 			            const queryResult = rows.map(row => 
-			                new medicFile.Medic(row.lastname, row.firstname, row.id, row.password)
+			                new medicFile.Medic(row.fullname, row.id, row.email,row.cellphone,row.user,null,row.registerdate)
 			            );
 			            
 			            resolve(queryResult);

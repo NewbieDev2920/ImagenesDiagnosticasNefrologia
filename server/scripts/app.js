@@ -184,7 +184,7 @@ app.get('/catalog', (req, res) =>{
 		res.render('401');
 	}else{
 		console.log("GET | /catalog | "+ req.ip+ " | "+ Date());
-		res.render('catalog');		
+		res.render('catalog', {medicname : req.session.profile.full});		
 	}
 
 })
@@ -237,18 +237,18 @@ app.post('/newpatient', (req, res) => {
 		crud.createPatient(patient);							
 	}
 	
-})
+});
 
 app.post('/newmedic', (req, res) =>{
     console.log('POST | /newmedic | '+ req.ip +' | '+ Date());
     if(req.session.admin){
 		console.log(req.body);
-		let medic = new medicFile.Medic(req.body.lastname, req.body.firstname, req.body.id, req.body.password);
+		let medic = new medicFile.Medic(req.body.fullname, req.body.id, req.body.email, req.body.cellphone, req.body.user, req.body.password, null);
 		crud.createMedic(medic);    	
     }
 	
 	
-})
+});
 
 app.get('/terminal', (req,res) =>{
 	if(req.session.admin){
@@ -275,7 +275,7 @@ app.post('/medicauth', (req,res)=>{
 		}
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
-			req.session.profile = new medicFile.Medic(q[0].lastName, q[0].firstName, q[0].id, null);
+			req.session.profile = new medicFile.Medic(q[0].fullname, q[0].id, q[0].email, q[0].cellphone, q[0].user,null, q[0].registerdate);
 			req.session.type = 'medic';
 			res.json({status : 'OK', redirect : '/catalog'}) 
 		}else{
