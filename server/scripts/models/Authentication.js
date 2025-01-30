@@ -8,7 +8,7 @@ class Authentication{
 
 	medicCredentials(user, pass){
 		return new Promise((resolve, reject) => {
-			        this.db.all("SELECT * FROM medics WHERE lastname='"+user+"' AND password='"+pass+"'", (err, rows) => {
+			        this.db.all("SELECT * FROM medics WHERE user='"+user+"' AND password='"+pass+"'", (err, rows) => {
 			            if (err) {
 			                reject(err);
 			                return 0;
@@ -32,7 +32,7 @@ class Authentication{
 					            }
 					            
 					            const queryResult = rows.map(row => 
-					                new patientFile.Patient(row.fullname, row.idtype, row.id, row.birthdate, row.cellphone, row.email,row.user, row.sponsor, null, row.registerdate)
+					                new patientFile.Patient(row.fullname, row.idtype, row.id, row.birthdate, row.cellphone, row.email,row.user,null, row.registerdate)
 					            );
 					            
 					            resolve(queryResult);

@@ -29,6 +29,7 @@ html(lang="en")
                option(value="T.I") Tarjeta de identidad
                option(value="R.C") Registro civil
                option(value="C.E") Cedula de extranjeria
+               option(value="N.A") OTRO
             br
             br
             label(for="id") ID
@@ -39,28 +40,18 @@ html(lang="en")
             input#birthdate(type="date" name="birthdate")
             br
             br
-            label(for="cellphone") Celular
-            input#cellphone(type="text" name="cellphone")
-            br
-            br
-            label(for="email") Correo
-            input#email(type="email" name="email")
-            br
-            br
           p#operation-message
         .column-right
+          label(for="cellphone") Celular
+          input#cellphone(type="text" name="cellphone")
+          br
+          br
+          label(for="email") Correo
+          input#email(type="email" name="email")
+          br
+          br
           label(for="user") Usuario
           input#user(type="text" name="user")
-          br
-          br
-          //PRESTADORES
-          label(for="sponsor") Prestadores
-          select#sponsor(name='sponsor')
-             option(value="FAMISANAR") FAMISANAR
-             option(value="SALUDTOTAL") SALUD TOTAL
-             option(value="SURA") SURA
-             option(value="COOMEVA") COOMEVA
-             option(value="SANITAS") SANITAS
           br
           br
           label(for="password") Contraseña
@@ -86,7 +77,6 @@ script.
           	cellphone: document.getElementById("cellphone").value,
           	email: document.getElementById("email").value,
           	user: document.getElementById("user").value,
-          	sponsor: document.getElementById("sponsor").value,
           	password: document.getElementById('password').value,
           }
           console.log(formData);

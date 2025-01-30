@@ -1,5 +1,5 @@
 class Patient{
-	constructor(fullname, idtype, id, birthdate, cellphone, email, user, sponsor, password, registerDate){
+	constructor(fullname, idtype, id, birthdate, cellphone, email, user, password, registerDate){
 		this.fullname = fullname;
 		this.idtype = idtype;
 		this.id = id;
@@ -7,7 +7,6 @@ class Patient{
 		this.cellphone = cellphone;
 		this.email = email;
 		this.user = user;
-		this.sponsor = sponsor;
 		this.password = password;
 		if(registerDate === null){
 			this.registerDate = Date();
@@ -43,10 +42,6 @@ class Patient{
 
 	getUser(){
 		return this.user;
-	}
-
-	getSponsor(){
-		return this.sponsor;
 	}
 
 	getPassword(){

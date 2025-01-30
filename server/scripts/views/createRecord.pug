@@ -18,27 +18,136 @@ html(lang="en")
             input#lastname(type="text", name="lastname", onkeydown="refreshSearchBar()")
             br
             br
-            label(for="clinichistory") Historia Clinica
-            input#clinichistory(type="text", name="clinichistory")
-            br
-            br
             label(for="images") Lista de imagenes
             div#patient-images-container
                input#images(type="file" multiple)
             br
             label(for='study') Estudio
-            select(name="study")
-               option(value="ECO") Ecografia
-               option(value ="RES") Resonancia
-               option(value ="RAYX") Rayos X
+            select#study(name="study")
+               option(value = "CARPOGRAMA") CARPOGRAMA R
+               option(value="CARPOGRAMA") DETECTAR EDAD OSEA R
+               option(value = "CLAVICULA") CLAVICULA R
+               option(value= "ANTEBRAZO") ANTEBRAZO R
+               option(value="CODO") CODO R
+               option(value="MUNECA") MUNECA R
+               option(value="DEDOSENMANO") DEDOS EN MANO R
+               option(value="PIE AP Y LATERAL") PIE AP Y LATERAL R
+               option(value="CALCANEO AXIAL Y LATERAL") CALCANEO AXIAL Y LATERAL R
+               option(value="TOBILLO AP LATERAL Y ROTACION INTERNA") TOBILLO AP LATERAL Y ROTACION INTERNA R
+               option(value="ANTEPIE AP Y OBLICUA") ANTEPIE AP Y OBLICUA R
+               option(value="OMOPLATO") OMOPLATO R
+               option(value="HUMERO") HUMERO R
+               option(value="HOMBRO") HOMBRO R
+               option(value="FEMUR AP Y LATERAL") FEMUR AP Y LATERAL R
+               option(value="PIERNA AP Y LATERAL") PIERNA AP Y LATERAL R
+               option(value="ANTEVERSION TIBIAL") ANTEVERSION TIBIAL R
+               option(value="MIEMBRO INFERIOR AP Y LATERAL") MIEMBRO INFERIOR AP Y LATERAL R
+               option(value="RODILLA AP Y LATERAL") RODILLA AP Y LATERAL R
+               option(value="ESTUDIO DE FARILL UOSTEOMETRIA") UOSTEOMETRIA R
+               option(value="ESTUDIO DE FARILL UOSTEOMETRIA") MEDICION DE MIEMBROS INFERIORES R
+               option(value="ESTUDIO DE FARILL UOSTEOMETRIA") PIE PLANO R
+               option(value="AXIALES DE ROTULA") AXIALES DE ROTULA R
+               option(value="AXIALES DE ROTULA") LONGITUD DE MIEMBROS INFERIORES R
+               option(value="ANTEVERSION FEMORAL") ANTEVERSION FEMORAL R
+               option(value="ARTICULACIONES SACROILIACAS") ARTICULACIONES SACROILIACAS R
+               option(value="PELVIS") PELVIS R
+               option(value="PELVIS") ARTICULACION COXO-FEMORAL (AP, LATERAL) R
+               option(value="ARTICULACIONES ACROMIO CLAVICULARES COMPARATIVAS") ARTICULACIONES ACROMIO CLAVICULARES COMPARATIVAS R
+               option(value="PELVISCADERA") PELVIS (CADERA) COMPARATIVA R
+               option(value="RODILLAS COMPARATIVAS POSICION VERTICAL (ANTEROPOSTERIOR)") RODILLAS COMPARATIVAS POSICION VERTICAL ANTEPOSTERIOR R
+               option(value="COMPARATIVAS EXTREMIDADES INFERIORES") COMPARATIVAS EXTREMIDADES INFERIORES R
+               option(value="STRESS") STRESS R
+               option(value="TUNEL") TUNEL R
+               option(value="OBLICUAS") OBLICUAS R
+               option(value="TANGENCIAL ROTULA") TANGENCIAL DE ROTULA R
+               option(value="HUESOS LARGOS SERIE COMPLETA") HUESOS LARGOS SERIE COMPLETA R
+               option(value="HUESOS LARGOS SERIE COMPLETA") ESQUELETO AXIAL Y APENDIPULAR R
+               option(value="SILLA TURCA") SILLA TURCA R
+               option(value="PERFILOGRAMA") PERFILOGRAMA R
+               option(value="PERFILOGRAMA") CARA R
+               option(value="MALAR") MALAR R
+               option(value = "ARCO CIGOMATICO") ARCO CIGOMATICO R
+               option(value ="HUESOS NASALES") HUESOS NASALES R
+               option(value="MAXILAR SUPERIOR") MAXILAR SUPERIOR R
+               option(value="ORBITAS") ORBITAS R
+               option(value="AGUJEROS OPTICOS") AGUJEROS OPTICOS R
+               option(value="SENOS PARANASALES") SENOS PARANASALES R
+               option(value="MAXILAR INFERIOR") MAXILAR INFERIOR R
+               option(value="ATM") ATM R
+               option(value="ATM") ARTICULACION TEMPOROMAXILAR R
+               option(value="CRANEO SIMPLE") CRANEO SIMPLE R
+               option(value="BASE DE CRANEO") BASE DE CRANEO R
+               option(value="CEFALOMETRIA") CEFALOMETRIA R
+               option(value="MASTOIDES COMPARATIVAS") MASTOIDES COMPARATIVAS R
+               option(value="PENASCOS") PENASCOS R
+               option(value="CONDUCTO AUDITIVO INTERNO") CONDUCTO AUDITIVO INTERNO R
+               option(value="TEJIDOS BLANDOS DE CUELLO") TEJIDOS BLANDOS DE CUELLO R
+               option(value="CAVUM FARINGEO") CAVUM FARINGEO R
+               option(value="FARINGOGRAFIA") FARINGOGRAFIA R
+               option(value="FARINGOGRAFIA") FARINGE R
+               option(value="COLUMNA CERVICAL") COLUMNA CERVICAL R
+               option(value="COLUMNA UNION CERVICO DORSAL") COLUMNA UNION CERVICO DORSAL R
+               option(value="COLUMNA TORACICA") COLUMNA TORACICA R
+               option(value="COLUMNA LUMBOSACRA") COLUMNA LUMBOSACRA R 
+               option(value="SACRO COCCIX") SACRO COCCIX R
+               option(value="TEST DE ESCOLIOSIS") TEST DE ESCOLIOSIS 
+               option(value="REJA COSTAL") REJA COSTAL R
+               option(value="TORAX R") TORAX R
+               option(value="ESTERNON") ESTERNON R
+               option(value="ARTICULACIONES ESTERNOCLAVICULARES") ARTICULACIONES ESTERNOCLAVICULARES R
+               option(value="ABDOMEN SIMPLE") ABDOMEN SIMPLE R
+               option(value="ABDOMEN SIMPLE CON PROYECCIONES ADICIONALES") ABODMEN SIMPLE CON PROYECCIONES ADICIONALES R
+               option(value="ABDOMEN SIMPLE CON PROYECCIONES ADICIONALES") SERIE DE ABDOMEN AGUDO R
+               option(value="TEJIDOS BLANDOS DE CARA") TEJIDOS BLANDOS DE CARA E
+               option(value="GLANDULAS SALIVALES TRANSDUCTOR 7MHZ") GLANDULAS SALIVALES CON TRANSDUCTOR DE 7MHZ o mas E
+               option(value="GLANGLIOS CERVICALES") GLANGLIOS CERVICALES (MAPEO) E
+               option(value="MAMA TRANSDUCTOR 7MHZ") MAMA CON TRANSDUCTOR DE 7MHZ o mas E
+               option(value="TORAX") TORAX (PERICARDIO O PLEURA) E
+               option(value="OTROS SITIOS TORACICOS") OTROS SITIOS TORACICOS E
+               option(value="TEJIDOS BLANDOS DE PARED ABDOMINAL Y DE PELVIS") TEJIDOS BLANDOS DE PARED ABDOMINAL Y DE PELVIS E
+               option(value="ABDOMEN TOTAL") ABDOMEN TOTAL E
+               option(value="ABDOMEN SUPERIOR") ABDOMEN SUPERIOR E
+               option(value="HIGADO PANCREAS VIA BILIAR Y VESICULA") HIGADO PANCREAS VIA BILIAR Y VESICULA E
+               option(value="PILORO") ABDOMEN (PILORO) E
+               option(value="RINONES") RINONES E
+               option(value="BAZO") BAZO E
+               option(value="AORTA") AORTA E
+               option(value="ADRENALES") ADRENALES E
+               option(value="VIAS URINARIAS") VIAS URINARIAS (RINONES VEJIGA PROSTATA TRANSABDOMINAL) E
+               option(value="ABDOMEN") ABDOMEN (MASAS ABDOMINALES Y DE RETROPERITONEO) E
+               option(value="PELVICA") PELVICA CON ANALISIS DOPPLER E
+               option(value="TEJIDOS BLANDOS DE ABDOMEN CON ANALISIS DOPPLER") TEJIDOS BLANDOS DE ABDOMEN CON ANALISIS DOPPLER E
+               option(value="PELVICA GINECOLOGICA TRANSVAGINAL") PELVICA GINECOLOGICA TRANSVAGINAL E
+               option(value="PELVICA GINECOLOGICA TRANSABDOMINAL") PELVICA GINECOLOGICA TRANSABDOMINAL E
+               option(value="OBSTETRICA TRANSABDOMINAL") OBSTETRICA TRANSABDOMINAL E
+               option(value="OBSTETRICA TRANSVAGINAL") OBSTETRICA TRANSVAGINAL E
+               option(value ="PERFIL BIOFISICO") PERFIL BIOFISICO 
+               option(value="PROSTATA TRANSABDOMINAL") PROSTATA TRANSABDOMINAL E
+               option(value="PROSTATA TRANSRECTAL") PROSTATA TRANSRECTAL E
+               option(value="TESTICULAR CON TRANSDUCTOR DE 7MHZ") TESTICULAR CON TRANSDUCTOR DE 7MHZ E
+               option(value="TESTICULAR CON ANALIIS DE DOPPLER") TESTICULAR CON ANALISIS DE DOPPLER E
+               option(value="TEJIDOS BLANDOS EN LAS EXTREMIDADES SUPERIORES CON TRANSDUCTOR DE 7MHZ") TEJIDOS BLANDOS EN LAS EXTREMIDADES SUPERIORES CON TRANSDUCTOR DE 7MHZ E
+               option(value="CONSULTA") CONSULTA
+               option(value="CONSULTA") CONSULTA NEFROLOGIA
+            label(for="sponsor") Prestador
+            select#sponsor(name="sponsor")
+               option(value="COOMEVA MEDICINA PREPAGADA") COOMEVA MEDICINA PREPAGADA
+               option(value="BOLIVAR") BOLIVAR
+               option(value="S") S
+               option(value="COLSANITAS") COLSANITAS
+               option(value="SALUDAMOS") SALUDAMOS
+               option(value="SAGRADA FAMILIA") SAGRADA FAMILIA
+               option(value="GRUPOVIVIR") GRUPOVIVIR
+               option(value="AXA COLPATRIA") AXA COLPATRIA
+               option(value="COLMEDICA PREPAGADA") COLMEDICA PREPAGADA
+               option(value="ALLIANZ") ALLIANZ
+               option(value="SURA POLIZA") SURA POLIZA
+               option(value="PARTICULAR") PARTICULAR
+               option(value="OTRO") OTRO (Puede escribirlo en observaciones)
             br
             br
             label(for="price") Valor
             input#price(type="text", name="price")
-            br
-            br
-            label(for="case") Asunto
-            input#case(type="text", name="case")
             br
             br
             label(for="observations") Observaciones
@@ -73,10 +182,10 @@ script.
     		dataContainer.innerHTML += `
             <div class="container-patient">
                 <div class="patient-data">
-                    <div class="patient-name">${patient.firstName}</div>
+                    <div class="patient-name">${patient.fullname}</div>
                     <div class = "patient-id">${patient.id}</div>
                 </div>
-                <div class="add-patient" onclick="selectPatient(${patient.id},'${patient.firstName}')">Seleccionar</div>
+                <div class="add-patient" onclick="selectPatient(${patient.id},'${patient.fullname}')">Seleccionar</div>
             </div>
     		`;
     		
@@ -134,9 +243,11 @@ script.
           	let imageFile = htmlImages.files[i];
           	formData.append('files', imageFile);
           }
-          formData.append('date', ''+ Date());
-          formData.append('name', selectedPatientName);
-          formData.append('id', selectedPatientId);
+          formData.append('patientName', selectedPatientName);
+          formData.append('patientId', selectedPatientId);
+          formData.append('study', document.getElementById('study').value);
+          formData.append('price', document.getElementById('price'.value));
+          formData.append('sponsor',document.getElementById('sponsor').value);     
           formData.append('observations', document.getElementById('observations').value);
           fetch('/newrecord',{
           	method : 'POST',

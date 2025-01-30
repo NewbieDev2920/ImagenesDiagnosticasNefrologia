@@ -18,6 +18,7 @@
 //LANDING PAGE ()
 //VALIDACIONES ()
 //PROBLEMA DE SEGURIDAD IMAGENES PUBLICAS ()
+//CHATBOT()
 //-----------------------------
 // v1.1
 //-----------------------------
@@ -137,9 +138,13 @@ app.get('/focusrecord', (req, res) => {
 	if(req.session.type === 'patient' || req.session.type == 'medic'){
 		console.log("GET | /patientrecordcatalog | "+ req.ip+ " | "+ Date());
 		crud.readRecordByID(req.query.id).then( q => {
-			//JSON RECORD(q[0]) id,  patientName, patientId, date, imagesPath
-			q[0].imagesPath = JSON.parse(q[0].imagesPath);
-			res.render('focusrecord', q[0]);	
+		
+			q[0].imagespath = q[0].imagesPath.split(",");
+			q[0].imagespath.pop();
+			q[0].imagespath[0] = q[0].imagespath[0].slice(1,q[0].imagespath[0].length);
+			res.render('focusrecord', q[0]);
+			console.log(q[0].imagespath);
+				
 		});
 				
 	}
@@ -216,11 +221,13 @@ app.post('/newrecord', upload.array("files"),(req, res) => {
 		console.log('POST | /newrecord | '+ req.ip+' | '+ Date());
 		console.log(req.body);
 		console.log(req.files);
-		let imagesPaths = [];
+		let imagespaths = "";
 		for(let i = 0; i < req.files.length; i++){
-			imagesPaths.push(req.files[i].path);
+			console.log(typeof req.files[i].path);
+			req.files[i].path = req.files[i].path.slice(7,req.files[i].path.length);
+			imagespaths = imagespaths+req.files[i].path+",";
 		}
-		let record = new recordFile.Record(null,req.body.id, req.body.name, req.body.date, imagesPaths);
+		let record = new recordFile.Record(null,req.body.patientId, req.body.patientName, req.body.study, req.body.price,req.body.sponsor,req.body.observations, null,imagespaths,req.session.profile.id, req.session.profile.fullname);
 		crud.createRecord(record);
 		res.json({status : "OK"});	
 	}
@@ -233,7 +240,7 @@ app.post('/newpatient', (req, res) => {
 	}else{
 		console.log('POST | /newpatient | '+ req.ip +' | '+ Date());
 		console.log(req.body);
-		let patient = new patientFile.Patient(req.body.fullname,req.body.idtype, req.body.id, req.body.birthdate, req.body.cellphone, req.body.email, req.body.user, req.body.sponsor, req.body.password, null);
+		let patient = new patientFile.Patient(req.body.fullname,req.body.idtype, req.body.id, req.body.birthdate, req.body.cellphone, req.body.email, req.body.user,req.body.password, null);
 		crud.createPatient(patient);							
 	}
 	
@@ -296,7 +303,7 @@ app.post('/patientauth', (req, res) => {
 		else if(q.length === 1){
 			console.log('AUTHENTICATED CORRECTLY!');
 			//row.fullname, row.idtype, row.id,row.birthdate, row.cellphone, row.email, row.user, row.sponsor, row.password, row.registerdate
-			req.session.profile = new patientFile.Patient(q[0].fullname, q[0].idtype, q[0].id, q[0].birthdate, q[0].cellphone, q[0].email, q[0].user, q[0].sponsor, null, q[0].registerdate);
+			req.session.profile = new patientFile.Patient(q[0].fullname, q[0].idtype, q[0].id, q[0].birthdate, q[0].cellphone, q[0].email, q[0].user,null, q[0].registerdate);
 			req.session.type = 'patient';
 			res.json({status : 'OK', redirect : '/patientrecordcatalog'});
 			

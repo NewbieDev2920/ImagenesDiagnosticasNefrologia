@@ -18,8 +18,8 @@ head
           figure
             //display Images
             .images
-               each path in imagesPath
-                  img(src="../"+path, alt="img examen", width="300", height="200")
+               each path in imagespath
+                  img(src=path, alt="img examen", width="300", height="200")
             #image-viewer
                span.close X
                img#full-image.modal-content
